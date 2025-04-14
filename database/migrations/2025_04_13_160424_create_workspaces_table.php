@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('workspaces', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_workspace');
+            $table->string('title');
+            $table->boolean('archived')->default(false);
+            $table->unsignedBigInteger('id_user');
         });
     }
 

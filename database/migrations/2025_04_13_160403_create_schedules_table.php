@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('schedules', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_schedule');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('active_day');
+            $table->integer('scan_limit');
+            $table->string('location');
         });
     }
 

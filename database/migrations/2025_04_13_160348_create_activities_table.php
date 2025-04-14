@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_activity');
+            $table->timestamp('created_at');
+            $table->string('action');
+            $table->string('target_type');
+            $table->unsignedBigInteger('target_id');
+            $table->unsignedBigInteger('id_user');
         });
     }
 

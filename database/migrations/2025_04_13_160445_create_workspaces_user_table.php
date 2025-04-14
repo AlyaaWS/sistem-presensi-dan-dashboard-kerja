@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workspaces_user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('workspace_user', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_workspace');
+            $table->string('role_in_workspace');
         });
     }
 
