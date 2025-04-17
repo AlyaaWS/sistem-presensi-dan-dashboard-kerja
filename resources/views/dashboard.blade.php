@@ -47,20 +47,27 @@
         }
 
         #sidebar ul.components {
-            padding-left: 15px;
+            padding-left: 0;
             margin-top: -40px;
-            margin-left: -8px;
         }
 
         #sidebar ul li a,
         .logout-link {
-            display: block;
-            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            padding: 13px 20px;
             font-size: 0.9em;
             color: #666;
             text-decoration: none;
             margin-bottom: 10px;
             transition: all 0.2s ease;
+        }
+
+        #sidebar ul li a i,
+        .logout-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
         }
 
         #sidebar ul li a:hover,
@@ -130,23 +137,23 @@
             <img src="{{ asset('logo_putih.png') }}" alt="Logo">
         </div>
         <ul class="list-unstyled components">
-            <li class="active">
-                <a href="#"><i class="fas fa-user-shield mr-2"></i>Kelola Admin</a>
+            <li>
+                <a href="{{ route('kelola.admin') }}"><i class="fas fa-user-shield mr-2"></i>Kelola Admin</a>
             </li>
             <li>
-                <a href="#"><i class="fas fa-users mr-2"></i>Kelola Pengguna</a>
+                <a href="#"><i class="fas fa-users"></i>Kelola Pengguna</a>
             </li>
             <li>
-                <a href="#"><i class="fas fa-calendar-check mr-2"></i>Kelola Presensi</a>
+                <a href="#"><i class="fas fa-calendar-check"></i>Kelola Presensi</a>
             </li>
             <li>
-                <a href="{{ route('profile.edit') }}"><i class="fas fa-user-cog mr-2"></i>Profil</a>
+                <a href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i>Profil</a>
             </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="logout-link">
-                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        <i class="fas fa-sign-out-alt"></i>Logout
                     </a>
                 </form>
             </li>
