@@ -99,6 +99,7 @@
             padding: 10px;
             background-color: #415dd0;
             font-weight: bold;
+            z-index: 1;
         }
     </style>
 </head>
