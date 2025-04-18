@@ -186,6 +186,70 @@
         </nav>
 
         <!-- Main content goes here -->
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="#" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Tambah Role</a>
+                <a href="#" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Tambah Admin</a>
+                <a href="#" class="btn btn-primary"> Unduh </a>
+            </div>
+        
+            <div class="card">
+                <div class="card-body">
+                    <!-- Search Bar -->
+                    <div class="form-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Cari admin...">
+                    </div>
+        
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Id_Admin</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Password</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTable">
+                                <tr>
+                                    <td>1</td>
+                                    <td>Alya Wahyuning</td>
+                                    <td>alya@example.com</td>
+                                    <td>13/10/04</td>
+                                    <td>kepodong123.</td>
+                                    <td>Super Admin</td>
+                                    <td>Active</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Muchamad Sanaya Almatin</td>
+                                    <td>sanaya@example.com</td>
+                                    <td>13/10/04</td>
+                                    <td>kepodong123.</td>
+                                    <td>Super Admin</td>
+                                    <td>Active</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                <!-- Tambah data lainnya sesuai kebutuhan -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>
 
@@ -203,6 +267,16 @@
         });
     });
 </script>
+<script>
+// Search functionality
+$('#searchInput').on('keyup', function () {
+    let value = $(this).val().toLowerCase();
+    $('#adminTable tr').filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});
+</script>
+
 
 </body>
 </html>
