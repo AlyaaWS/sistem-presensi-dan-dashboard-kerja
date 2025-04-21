@@ -83,7 +83,6 @@
             font-weight: 600;
         }
 
-
         #sidebar ul li a:hover i,
         .logout-link:hover i {
             color: #fff;
@@ -100,6 +99,12 @@
             margin-left: -250px;
         }
 
+        #sidebarCollapse {
+            margin-left: -15px;
+            order: -1
+        }
+
+
         .navbar-light .navbar-nav .nav-link {
             color: #fff !important;
             font-weight: 500;
@@ -107,6 +112,33 @@
 
         .navbar-light .navbar-nav .nav-link:hover {
             color: #007bff !important;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #415dd0;
+            color: white;
+            font-weight: 700;
+        }
+
+        .btn-pink {
+            background-color: #ff69b4;
+            color: white;
+        }
+
+        .btn-pink:hover {
+            background-color: #e0559f;
+            color: white;
+        }
+
+        .table thead th {
+            background-color: white;
+            color: black;
+            border: none;
         }
 
         @media (max-width: 768px) {
@@ -121,17 +153,15 @@
             #sidebarCollapse span {
                 display: none;
             }
-        }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #415dd0;
-            color: white;
-            font-weight: 700;
+            .top-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-controls > div {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -147,15 +177,9 @@
             <li class="{{ Route::is('kelola.admin') ? 'active' : '' }}">
                 <a href="{{ route('kelola.admin') }}"><i class="fas fa-user-shield mr-2"></i>Kelola Admin</a>
             </li>
-            <li>
-                <a href="#"><i class="fas fa-users"></i>Kelola Pengguna</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-calendar-check"></i>Kelola Presensi</a>
-            </li>
-            <li>
-                <a href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i>Profil</a>
-            </li>
+            <li><a href="#"><i class="fas fa-users"></i>Kelola Pengguna</a></li>
+            <li><a href="#"><i class="fas fa-calendar-check"></i>Kelola Presensi</a></li>
+            <li><a href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -185,25 +209,31 @@
             </div>
         </nav>
 
-        <!-- Main content goes here -->
+        <!-- Main content -->
         <div class="container-fluid mt-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="#" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Tambah Role</a>
-                <a href="#" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Tambah Admin</a>
-                <a href="#" class="btn btn-primary"> Unduh </a>
+            <div class="d-flex flex-wrap justify-content-between align-items-center top-controls mb-3">
+                <div class="d-flex align-items-center">
+                    <label for="entriesSelect" class="mr-2 mb-0 text-white">Show</label>
+                    <select id="entriesSelect" class="form-control form-control-sm mr-3">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Cari admin...">
+                </div>
+                <div class="d-flex gap-2 mt-2 mt-md-0">
+                    <a href="#" class="btn btn-pink mr-2">Tambah Role</a>
+                    <a href="#" class="btn btn-pink mr-2">Tambah Admin</a>
+                    <a href="#" class="btn btn-pink">Unduh</a>
+                </div>
             </div>
-        
+
             <div class="card">
                 <div class="card-body">
-                    <!-- Search Bar -->
-                    <div class="form-group">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari admin...">
-                    </div>
-        
-                    <!-- Table -->
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="thead-dark">
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
                                     <th>Id_Admin</th>
                                     <th>Nama Lengkap</th>
@@ -242,14 +272,22 @@
                                         <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                 </tr>
-                                <!-- Tambah data lainnya sesuai kebutuhan -->
                             </tbody>
                         </table>
                     </div>
+
+                    <nav>
+                        <ul class="pagination justify-content-center mt-4">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
-        
     </div>
 </div>
 
@@ -265,18 +303,15 @@
             $('#sidebar').toggleClass('active');
             $('.wrapper').toggleClass('toggled');
         });
-    });
-</script>
-<script>
-// Search functionality
-$('#searchInput').on('keyup', function () {
-    let value = $(this).val().toLowerCase();
-    $('#adminTable tr').filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-});
-</script>
 
+        $('#searchInput').on('keyup', function () {
+            let value = $(this).val().toLowerCase();
+            $('#adminTable tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
