@@ -196,6 +196,35 @@
         </nav>
 
         <!-- Main content goes here -->
+        <div class="container mt-4">
+            <h3 class="text-white font-weight-bold mb-4">Tambah Admin</h3>
+            <form>
+                <div class="form-group">
+                    <label class="text-white font-weight-bold" for="nama_admin">Nama Admin</label>
+                    <input type="text" class="form-control rounded" id="nama_admin" placeholder="Masukkan nama admin">
+                </div>
+                <div class="form-group">
+                    <label class="text-white font-weight-bold" for="email">Email</label>
+                    <input type="email" class="form-control rounded" id="email" placeholder="Masukkan email">
+                </div>
+                <div class="form-group">
+                    <label class="text-white font-weight-bold" for="password">Password</label>
+                    <input type="password" class="form-control rounded" id="password" placeholder="Masukkan password">
+                </div>
+                <div class="form-group">
+                    <label class="text-white font-weight-bold" for="role">Role</label>
+                    <select class="form-control rounded" id="role">
+                        <option value="" selected disabled>Pilih Role</option>
+                        <option value="superadmin">Super Admin</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-danger mr-2 px-4" style="background-color: #F661AB; border: none;">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4" style="background-color: #F661AB; border: none;">OK</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -3,6 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KelolaAdminController;
+use App\Http\Controllers\TambahAdminController;
+use App\Http\Controllers\KelolaPenggunaController;
+use App\Http\Controllers\KelolaPresensiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +21,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//sidebar route
 Route::get('/kelola-admin', [KelolaAdminController::class, 'index'])->name('kelola.admin');
+Route::get('/kelola-pengguna', [KelolaPenggunaController::class, 'index'])->name('kelola.pengguna');
+Route::get('/kelola-presensi', [KelolaPresensiController::class, 'index'])->name('kelola.presensi');
 
+//route kelola admin
+Route::get('/tambah-admin', [TambahAdminController::class, 'index'])->name('tambah.admin');
 require __DIR__.'/auth.php';

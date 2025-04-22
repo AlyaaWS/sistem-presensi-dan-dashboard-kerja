@@ -306,7 +306,7 @@
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
                     <a href="#" class="btn btn-pink mr-2">Tambah Role</a>
-                    <a href="{{ route('tambah.admin') }}" class="btn btn-pink mr-2">Tambah Admin</a>
+                    <a href="#" class="btn btn-pink mr-2">Tambah Admin</a>
                     <a href="#" class="btn btn-pink">Unduh</a>
                 </div>
             </div>
