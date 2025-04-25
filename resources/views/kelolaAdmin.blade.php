@@ -305,7 +305,9 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
-                    <a href="#" class="btn btn-pink mr-2">Tambah Role</a>
+                    <button class="btn btn-pink mr-2" data-toggle="modal" data-target="#tambahRoleModal">
+                        Tambah Role
+                    </button>
                     <a href="{{ route('tambah.admin') }}" class="btn btn-pink mr-2">Tambah Admin</a>
                     <a href="#" class="btn btn-pink">Unduh</a>
                 </div>
@@ -375,6 +377,34 @@
 
 <div class="footer">@AALYAAS</div>
 
+<!-- Modal -->
+<div class="modal fade" id="tambahRoleModal" tabindex="-1" role="dialog" aria-labelledby="tambahRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form method="POST" action="{{ route('role.store') }}">
+        @csrf
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="tambahRoleModalLabel">Tambah Role</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="nama_role">Nama Role</label>
+              <input type="text" name="nama_role" class="form-control" placeholder="Contoh: Admin Presensi" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="cancel" class="btn btn-secondary">Cancel</button>
+            <button type="cancel" class="btn btn-primary">Lihat Role</button>
+            <button type="submit" class="btn btn-pink">Simpan</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -394,6 +424,19 @@
         });
     });
 </script>
+
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
+
 
 </body>
 </html>
