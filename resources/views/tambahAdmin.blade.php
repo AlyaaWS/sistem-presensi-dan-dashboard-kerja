@@ -203,32 +203,40 @@
         <!-- Main content goes here -->
     <div class="container mt-4">
     <h3 class="text-white font-weight-bold mb-4">Tambah Admin</h3>
-    <form>
+    <form action="{{ route('tambah.admin.store') }}" method="POST">
+        @csrf
         <div class="form-group">
-            <label class="text-white font-weight-bold" for="nama_admin">Nama Admin</label>
-            <input type="text" class="form-control rounded" id="nama_admin" placeholder="Masukkan nama admin">
+            <label class="text-white font-weight-bold" for="nama_lengkap">Nama Lengkap</label>
+            <input type="text" name="nama_lengkap" class="form-control rounded" id="nama_lengkap" placeholder="Masukkan nama lengkap">
+        </div>
+        <div class="form-group">
+            <label class="text-white font-weight-bold" for="nama_admin">Username</label>
+            <input type="text" name="name" class="form-control rounded" id="nama_admin" placeholder="Masukkan nama admin">
         </div>
         <div class="form-group">
             <label class="text-white font-weight-bold" for="email">Email</label>
-            <input type="email" class="form-control rounded" id="email" placeholder="Masukkan email">
+            <input type="email" name="email" class="form-control rounded" id="email" placeholder="Masukkan email">
         </div>
         <div class="form-group">
             <label class="text-white font-weight-bold" for="password">Password</label>
-            <input type="password" class="form-control rounded" id="password" placeholder="Masukkan password">
+            <input type="password" name="password" class="form-control rounded" id="password" placeholder="Masukkan password">
         </div>
         <div class="form-group">
             <label class="text-white font-weight-bold" for="role">Role</label>
-            <select class="form-control rounded" id="role">
+            <select class="form-control rounded" name="role" id="role">
                 <option value="" selected disabled>Pilih Role</option>
-                <option value="superadmin">Super Admin</option>
-                <option value="admin">Admin</option>
+                <option value="superadmin">Admin 1</option>
+                <option value="admin">Admin 2</option>
             </select>
         </div>
         <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-danger mr-2 px-4" style="background-color: #F661AB; border: none;">Cancel</button>
-            <button type="submit" class="btn btn-success px-4" style="background-color: #F661AB; border: none;">OK</button>
+            <button type="button" class="btn btn-danger mr-2 px-4">Cancel</button>
+            <button type="submit" class="btn btn-success px-4">Simpan</button>
         </div>
     </form>
+    <br>
+    <br>
+    <br> 
 </div>
     </div>
 </div>
