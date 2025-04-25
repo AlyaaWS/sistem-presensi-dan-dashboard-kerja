@@ -6,6 +6,7 @@ use App\Http\Controllers\KelolaAdminController;
 use App\Http\Controllers\TambahAdminController;
 use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\KelolaPresensiController;
+use App\Http\Controllers\TambahRoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,4 +29,5 @@ Route::get('/kelola-presensi', [KelolaPresensiController::class, 'index'])->name
 
 //route kelola admin
 Route::get('/tambah-admin', [TambahAdminController::class, 'index'])->name('tambah.admin');
+
 require __DIR__.'/auth.php';
