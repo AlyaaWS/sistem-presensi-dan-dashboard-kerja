@@ -29,8 +29,8 @@ Route::get('/kelola-pengguna', [KelolaPenggunaController::class, 'index'])->name
 Route::get('/kelola-presensi', [KelolaPresensiController::class, 'index'])->name('kelola.presensi');
 
 //route kelola admin
-Route::get('/tambah-admin', [TambahAdminController::class, 'index'])->name('tambah.admin');
 Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
-
+Route::get('/tambah-admin', [TambahAdminController::class, 'index'])->name('tambah.admin');
+Route::post('/tambah-admin', [TambahAdminController::class, 'store'])->name('tambah.admin.store');
 
 require __DIR__.'/auth.php';
