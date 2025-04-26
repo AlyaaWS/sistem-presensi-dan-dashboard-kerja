@@ -212,6 +212,26 @@
             margin-top: -15px;
         }
 
+        .button-like {
+            border-radius: 20px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            color: white;
+            padding: 4px 12px;
+            margin-top: 8px;
+            line-height: 1;
+        }
+
+        .bg-success {
+            background-color: #28a745;
+        }
+
+        .bg-danger {
+            background-color: #dc3545; /* merah */
+        }
+
+
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
@@ -330,33 +350,24 @@
                                 </tr>
                             </thead>
                             <tbody id="adminTable">
-                                <tr>
-                                    <td>1</td>
-                                    <td>Alya Wahyuning</td>
-                                    <td>alya@example.com</td>
-                                    <td>13/10/04</td>
-                                    <td>kepodong123.</td>
-                                    <td>Super Admin</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Muchamad Sanaya Almatin</td>
-                                    <td>sanaya@example.com</td>
-                                    <td>13/10/04</td>
-                                    <td>kepodong123.</td>
-                                    <td>Super Admin</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                                @foreach ($admins as $admin)
+                                    <tr>
+                                        <td class="text-center">{{ $admin->id }}</td>
+                                        <td>{{ $admin->nama_lengkap }}</td>
+                                        <td>{{ $admin->email }}</td>
+                                        <td>{{ $admin->created_at->format('d/m/y') }}</td>
+                                        <td>******</td>
+                                        <td>{{ $admin->role->nama_role }}</td>
+                                        <td class="{{ $admin->status == 'active' ? 'bg-success button-like' : 'bg-danger button-like' }}">
+                                            {{ $admin->status }}
+                                        </td>                                        
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>                            
                         </table>
                     </div>
 
