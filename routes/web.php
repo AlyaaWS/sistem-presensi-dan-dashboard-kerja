@@ -8,6 +8,7 @@ use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\KelolaPresensiController;
 use App\Http\Controllers\TambahRoleController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\EditAdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +34,6 @@ Route::post('/role/store', [RoleController::class, 'store'])->name('role.store')
 Route::get('/tambah-admin', [TambahAdminController::class, 'index'])->name('tambah.admin');
 Route::post('/tambah-admin', [TambahAdminController::class, 'store'])->name('tambah.admin.store');
 Route::get('/kelola-admin', [KelolaAdminController::class, 'index'])->name('kelola.admin');
-
+Route::delete('/kelola-admin/{id}', [KelolaAdminController::class, 'hapus'])->name('hapus.admin');
 
 require __DIR__.'/auth.php';

@@ -16,4 +16,13 @@ class KelolaAdminController extends Controller
 
         return view('kelolaAdmin', compact('admins'));
     }
+
+    public function hapus($id)
+    {
+        $admin = User::findOrFail($id);
+        $admin->delete();
+
+        return redirect()->route('kelola.admin')->with('success', 'Admin berhasil dihapus.');
+    }
+
 }

@@ -362,8 +362,16 @@
                                             {{ $admin->status }}
                                         </td>                                        
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="{{ route('edit.admin', $admin->id) }}" class="btn btn-sm btn-info" title="Edit Admin">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('hapus.admin', $admin->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); this.closest('form').submit();" title="Hapus Admin">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
