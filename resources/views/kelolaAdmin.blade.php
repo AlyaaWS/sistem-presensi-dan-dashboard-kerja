@@ -341,6 +341,7 @@
                                 <tr>
                                     <th>Id_Admin</th>
                                     <th>Nama Lengkap</th>
+                                    <th>Username</th>
                                     <th>Email</th>
                                     <th>Date</th>
                                     <th>Password</th>
@@ -354,9 +355,10 @@
                                     <tr>
                                         <td class="text-center">{{ $admin->id }}</td>
                                         <td>{{ $admin->nama_lengkap }}</td>
+                                        <td>{{ $admin->name }}</td>
                                         <td>{{ $admin->email }}</td>
                                         <td>{{ $admin->created_at->format('d/m/y') }}</td>
-                                        <td>******</td>
+                                        <td>****</td>
                                         <td>{{ $admin->role->nama_role }}</td>
                                         <td class="{{ $admin->status == 'active' ? 'bg-success button-like' : 'bg-danger button-like' }}">
                                             {{ $admin->status }}

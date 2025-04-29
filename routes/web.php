@@ -35,5 +35,13 @@ Route::get('/tambah-admin', [TambahAdminController::class, 'index'])->name('tamb
 Route::post('/tambah-admin', [TambahAdminController::class, 'store'])->name('tambah.admin.store');
 Route::get('/kelola-admin', [KelolaAdminController::class, 'index'])->name('kelola.admin');
 Route::delete('/kelola-admin/{id}', [KelolaAdminController::class, 'hapus'])->name('hapus.admin');
+// Tampilkan form edit admin
+Route::get('/admin/{id}/edit', [EditAdminController::class, 'edit'])->name('edit.admin');
+
+// Update admin
+Route::put('/admin/{id}', [EditAdminController::class, 'update'])->name('update.admin');
+
+// Halaman kelola admin
+Route::get('/admin', [EditAdminController::class, 'index'])->name('kelola.admin'); // (kalau index di controller ini juga)
 
 require __DIR__.'/auth.php';

@@ -122,6 +122,18 @@
             padding-bottom: 5px;
         }
 
+        .btn-pink {
+            background-color: #ff69b4;
+            color: white;
+            border-radius: 6px;
+            font-weight: 540;
+        }
+
+        .btn-pink:hover {
+            background-color: #e0559f;
+            color: white;
+        }
+
 
         @media (max-width: 768px) {
             #sidebar {
@@ -203,37 +215,52 @@
         <!-- Main content goes here -->
     <div class="container mt-4">
     <h3 class="text-white font-weight-bold mb-4">Edit Admin</h3>
-    <form action="{{ route('tambah.admin.store') }}" method="POST">
+    <form action="{{ route('update.admin', $user->id) }}" method="POST">
         @csrf
+        @method('PUT')
+    
         <div class="form-group">
             <label class="text-white font-weight-bold" for="nama_lengkap">Nama Lengkap</label>
-            <input type="text" name="nama_lengkap" class="form-control rounded" id="nama_lengkap" placeholder="Masukkan nama lengkap">
+            <input type="text" name="nama_lengkap" class="form-control rounded" id="nama_lengkap" value="{{ old('nama_lengkap', $user->nama_lengkap) }}" placeholder="Masukkan nama lengkap" required>
         </div>
+    
         <div class="form-group">
-            <label class="text-white font-weight-bold" for="nama_admin">Username</label>
-            <input type="text" name="name" class="form-control rounded" id="nama_admin" placeholder="Masukkan nama admin">
+            <label class="text-white font-weight-bold" for="name">Username</label>
+            <input type="text" name="name" class="form-control rounded" id="name" value="{{ old('name', $user->name) }}" placeholder="Masukkan username" required>
         </div>
+    
         <div class="form-group">
             <label class="text-white font-weight-bold" for="email">Email</label>
-            <input type="email" name="email" class="form-control rounded" id="email" placeholder="Masukkan email">
+            <input type="email" name="email" class="form-control rounded" id="email" value="{{ old('email', $user->email) }}" placeholder="Masukkan email" required>
         </div>
+    
         <div class="form-group">
             <label class="text-white font-weight-bold" for="password">Password</label>
-            <input type="password" name="password" class="form-control rounded" id="password" placeholder="Masukkan password">
+            <input type="password" class="form-control rounded" id="password" placeholder="**********" disabled>
         </div>
+    
         <div class="form-group">
-            <label class="text-white font-weight-bold" for="role">Role</label>
-            <select class="form-control rounded" name="role" id="role">
-                <option value="" selected disabled>Pilih Role</option>
-                <option value="superadmin">Admin 1</option>
-                <option value="admin">Admin 2</option>
-            </select>
+            <label class="text-white font-weight-bold" for="id_role">Role</label>
+            
+        <select class="form-control rounded" id="id_role" disabled>
+            <option value="" disabled>Pilih Role</option>
+                @foreach ($roles as $role)
+            <option value="{{ $role->id }}" {{ (string) old('id_role', $user->id_role) === (string) $role->id ? 'selected' : '' }}>
+                    {{ $role->nama_role }}
+            </option>                
+                @endforeach
+        </select>
+        
+            <!-- Kirim value yang dipilih tetap ke server -->
+            <input type="hidden" name="id_role" value="{{ old('id_role', $user->id_role) }}">
         </div>
+        
+    
         <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-danger mr-2 px-4">Cancel</button>
-            <button type="submit" class="btn btn-success px-4">Simpan</button>
+            <button type="button" class="btn btn-secondary mr-2 px-4" onclick="history.back()">Cancel</button>
+            <button type="submit" class="btn btn-pink px-4">Simpan</button>
         </div>
-    </form>
+    </form>   
     <br>
     <br>
     <br> 

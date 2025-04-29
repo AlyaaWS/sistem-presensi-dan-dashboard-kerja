@@ -230,8 +230,8 @@
             </select>
         </div>
         <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-danger mr-2 px-4">Cancel</button>
-            <button type="submit" class="btn btn-success px-4">Simpan</button>
+            <button type="button" class="btn btn-secondary mr-2 px-4">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4">Simpan</button>
         </div>
     </form>
     <br>
