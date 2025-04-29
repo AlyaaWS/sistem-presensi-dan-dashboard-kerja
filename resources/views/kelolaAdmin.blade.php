@@ -339,7 +339,7 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Id_Admin</th>
+                                    <th>Id</th>
                                     <th>Nama Lengkap</th>
                                     <th>Username</th>
                                     <th>Email</th>
@@ -361,7 +361,7 @@
                                         <td>****</td>
                                         <td>{{ $admin->role->nama_role }}</td>
                                         <td class="{{ $admin->status == 'active' ? 'bg-success button-like' : 'bg-danger button-like' }}">
-                                            {{ $admin->status }}
+                                            {{ $admin->status == 'active' ? 'active' : 'non active' }}
                                         </td>                                        
                                         <td>
                                             <a href="{{ route('edit.admin', $admin->id) }}" class="btn btn-sm btn-info" title="Edit Admin">
@@ -458,6 +458,17 @@
 </script>
 @endif
 
+@if(session('failed'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('failed') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
 
 </body>
 </html>
