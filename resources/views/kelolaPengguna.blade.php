@@ -212,6 +212,17 @@
             margin-top: -15px;
         }
 
+        .button-like {
+            border-radius: 20px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            color: white;
+            padding: 4px 12px;
+            margin-top: 8px;
+            line-height: 1;
+        }
+
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
@@ -305,20 +316,19 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
-                    <a href="#" class="btn btn-pink mr-2">Tambah Role</a>
-                    <a href="#" class="btn btn-pink mr-2">Tambah Admin</a>
+                    <a href="#" class="btn btn-pink mr-2">Tambah Pengguna</a>
                     <a href="#" class="btn btn-pink">Unduh</a>
                 </div>
             </div>
-
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Id_Admin</th>
+                                    <th>Id</th>
                                     <th>Nama Lengkap</th>
+                                    <th>Username</th>
                                     <th>Email</th>
                                     <th>Date</th>
                                     <th>Password</th>
@@ -328,32 +338,30 @@
                                 </tr>
                             </thead>
                             <tbody id="adminTable">
+                                @foreach ($users as $user)
                                 <tr>
-                                    <td>1</td>
-                                    <td>Alya Wahyuning</td>
-                                    <td>alya@example.com</td>
-                                    <td>13/10/04</td>
-                                    <td>kepodong123.</td>
-                                    <td>Super Admin</td>
-                                    <td>Active</td>
-                                    <td>
+                                    <td class="text-center">{{ $user->id }}</td>
+                                        <td>{{ $user->nama_lengkap }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->created_at->format('d/m/y') }}</td>
+                                        <td>****</td>
+                                        <td>{{ $user->role->nama_role ?? '-' }}</td>
+                                        <td class="{{ $user->status == 'active' ? 'bg-success button-like' : 'bg-danger button-like' }}">
+                                            {{ $user->status == 'active' ? 'active' : 'non active' }}
+                                        </td>                                        
+                                        <td>
                                         <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                        <form action="{{ route('hapus.pengguna', $user->id) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); this.closest('form').submit();" title="Hapus Pengguna">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Muchamad Sanaya Almatin</td>
-                                    <td>sanaya@example.com</td>
-                                    <td>13/10/04</td>
-                                    <td>kepodong123.</td>
-                                    <td>Super Admin</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -394,6 +402,31 @@
         });
     });
 </script>
+
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
+
+@if(session('failed'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('failed') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
+
 
 </body>
 </html>
