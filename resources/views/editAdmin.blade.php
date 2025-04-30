@@ -158,6 +158,7 @@
             background-color: #415dd0;
             color: white;
             font-weight: 700;
+            z-index: 1;
         }
     </style>
 </head>
