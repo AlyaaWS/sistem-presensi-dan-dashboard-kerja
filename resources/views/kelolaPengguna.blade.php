@@ -126,6 +126,7 @@
             background-color: #415dd0;
             color: white;
             font-weight: 700;
+            z-index: 3;
         }
 
         .top-controls .d-flex.gap-2 {
@@ -184,6 +185,7 @@
         .pagination .page-link {
             background-color: #ffffff;  /* pink */
             color: rgb(0, 0, 0);
+            z-index: 1;
         }
 
         .pagination .page-link:hover {
@@ -316,7 +318,7 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
-                    <a href="#" class="btn btn-pink mr-2">Tambah Pengguna</a>
+                    <a href="{{ route('tambah.pengguna') }}" class="btn btn-pink mr-2">Tambah Pengguna</a>
                     <a href="#" class="btn btn-pink">Unduh</a>
                 </div>
             </div>
