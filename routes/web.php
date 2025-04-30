@@ -7,6 +7,7 @@ use App\Http\Controllers\TambahAdminController;
 use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\KelolaPresensiController;
 use App\Http\Controllers\TambahRoleController;
+use App\Http\Controllers\TambahPenggunaController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\EditAdminController;
 
@@ -41,4 +42,6 @@ Route::get('/admin', [EditAdminController::class, 'index'])->name('kelola.admin'
 
 //route kelola pengguna
 Route::delete('/kelola-pengguna/{id}', [KelolaPenggunaController::class, 'hapus'])->name('hapus.pengguna');
+Route::get('/tambah-pengguna', [TambahPenggunaController::class, 'index'])->name('tambah.pengguna');
+Route::post('/tambah-pengguna', [TambahpenggunaController::class, 'store'])->name('tambah.pengguna.store');
 require __DIR__.'/auth.php';
