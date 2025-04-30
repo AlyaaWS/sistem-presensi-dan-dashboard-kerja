@@ -126,6 +126,7 @@
             background-color: #415dd0;
             color: white;
             font-weight: 700;
+            z-index: 3;
         }
 
         .top-controls .d-flex.gap-2 {
@@ -184,6 +185,7 @@
         .pagination .page-link {
             background-color: #ffffff;  /* pink */
             color: rgb(0, 0, 0);
+            z-index: 0;
         }
 
         .pagination .page-link:hover {
