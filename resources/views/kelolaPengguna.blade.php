@@ -353,7 +353,9 @@
                                             {{ $user->status == 'active' ? 'active' : 'non active' }}
                                         </td>                                        
                                         <td>
-                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('edit.pengguna', $user->id) }}" class="btn btn-sm btn-info" title="Edit Pengguna">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
                                         <form action="{{ route('hapus.pengguna', $user->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
