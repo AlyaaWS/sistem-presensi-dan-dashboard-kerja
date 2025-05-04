@@ -305,8 +305,8 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
-                    <a href="#" class="btn btn-pink mr-2">Tambah Role</a>
-                    <a href="#" class="btn btn-pink mr-2">Tambah Admin</a>
+                    <a href="#" class="btn btn-pink mr-2">Atur Presensi</a>
+                    <a href="{{ route('tambah.presensi') }}" class="btn btn-pink mr-2">Tambah Presensi</a>
                     <a href="#" class="btn btn-pink">Unduh</a>
                 </div>
             </div>
@@ -317,44 +317,31 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Id_Admin</th>
+                                    <th>Id</th>
                                     <th>Nama Lengkap</th>
                                     <th>Email</th>
                                     <th>Date</th>
-                                    <th>Password</th>
+                                    <th>Time</th>
                                     <th>Role</th>
-                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminTable">
-                                <tr>
-                                    <td>1</td>
-                                    <td>Alya Wahyuning</td>
-                                    <td>alya@example.com</td>
-                                    <td>13/10/04</td>
-                                    <td>kepodong123.</td>
-                                    <td>Super Admin</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Muchamad Sanaya Almatin</td>
-                                    <td>sanaya@example.com</td>
-                                    <td>13/10/04</td>
-                                    <td>kepodong123.</td>
-                                    <td>Super Admin</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody>
+                                @foreach ($presensis as $presensi)
+                                    <tr>
+                                        <td>{{ $presensi->id_presensi }}</td>
+                                        <td>{{ $presensi->user->nama_lengkap }}</td>
+                                        <td>{{ $presensi->user->email }}</td>
+                                        <td>{{ $presensi->date }}</td>
+                                        <td>{{ $presensi->time }}</td>
+                                        <td>{{ $presensi->user->role->nama_role ?? '-' }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>                            
                         </table>
                     </div>
 
@@ -395,5 +382,28 @@
     });
 </script>
 
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
+
+@if(session('failed'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('failed') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
 </body>
 </html>
