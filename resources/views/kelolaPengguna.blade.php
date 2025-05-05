@@ -270,7 +270,7 @@
             <li class="{{ Route::is('kelola.presensi') ? 'active' : '' }}">
                 <a href="{{ route('kelola.presensi') }}"><i class="fas fa-calendar-alt mr-2"></i>Kelola Presensi</a>
             </li>
-            <li><a href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
+            <li><a href="{{ route('profil') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -293,7 +293,7 @@
                     <a href="#" class="text-white mr-3" title="Notifications">
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
-                    <a href="{{ route('profile.edit') }}">
+                    <a href="{{ route('profil') }}">
                         <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
                     </a>
                 </div>

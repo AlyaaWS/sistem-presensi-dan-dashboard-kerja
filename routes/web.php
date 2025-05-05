@@ -11,7 +11,9 @@ use App\Http\Controllers\TambahPenggunaController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\EditAdminController;
 use App\Http\Controllers\EditPenggunaController;
+use App\Http\Controllers\EditPresensiController;
 use App\Http\Controllers\TambahPresensiController;
+use App\Http\Controllers\ProfilController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,5 +57,12 @@ Route::get('/kelola-presensi', [KelolaPresensiController::class, 'index'])->name
 Route::get('/tambah-presensi', [TambahPresensiController::class, 'index'])->name('tambah.presensi');
 Route::post('/tambah-presensi', [TambahPresensiController::class, 'store'])->name('tambah.presensi.store');
 Route::delete('/kelola-presensi/{id}', [KelolaPresensiController::class, 'hapus'])->name('hapus.presensi');
+Route::put('/presensi/{id}', [EditPresensiController::class, 'update'])->name('update.presensi');
+Route::get('/presensi/{id}/edit', [EditPresensiController::class, 'edit'])->name('edit.presensi');
+
+
+
+//profil
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 
 require __DIR__.'/auth.php';

@@ -257,7 +257,7 @@
             <li class="{{ Route::is('kelola.presensi') ? 'active' : '' }}">
                 <a href="{{ route('kelola.presensi') }}"><i class="fas fa-calendar-alt mr-2"></i>Kelola Presensi</a>
             </li>
-            <li><a href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
+            <li><a href="{{ route('profil') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -280,7 +280,7 @@
                     <a href="#" class="text-white mr-3" title="Notifications">
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
-                    <a href="{{ route('profile.edit') }}">
+                    <a href="{{ route('profil') }}">
                         <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
                     </a>
                 </div>
@@ -323,6 +323,7 @@
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Role</th>
+                                    <th>Lokasi</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -335,8 +336,11 @@
                                         <td>{{ $presensi->date }}</td>
                                         <td>{{ $presensi->time }}</td>
                                         <td>{{ $presensi->user->role->nama_role ?? '-' }}</td>
+                                        <td>{{ $presensi->location }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('edit.presensi', $presensi->id_presensi) }}" class="btn btn-sm btn-info" title="Edit Presensi">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
                                             <form action="{{ route('hapus.presensi', $presensi->id_presensi) }}" method="POST" style="display: inline;">
                                                 @csrf
                                                 @method('DELETE')
@@ -344,7 +348,7 @@
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>                                            
-                                        </td>
+                                        </td>         
                                     </tr>
                                 @endforeach
                             </tbody>                            

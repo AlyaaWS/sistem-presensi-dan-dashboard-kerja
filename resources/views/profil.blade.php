@@ -77,14 +77,15 @@
             font-weight: 600;
         }
 
+        #sidebar ul li.active > a {
+            background-color: #151D4B;
+            color: #fff !important;
+            font-weight: 600;
+        }
+
         #sidebar ul li a:hover i,
         .logout-link:hover i {
             color: #fff;
-        }
-
-        #sidebarCollapse {
-            margin-left: -15px;
-            order: -1
         }
 
         #content {
@@ -98,6 +99,15 @@
             margin-left: -250px;
         }
 
+        #sidebarCollapse {
+            margin-left: -15px;
+            order: -1
+        }
+
+        #entriesSelect {
+            width: 20%;
+        }
+
         .navbar-light .navbar-nav .nav-link {
             color: #fff !important;
             font-weight: 500;
@@ -107,20 +117,21 @@
             color: #007bff !important;
         }
 
-        #sidebar ul li.active > a {
-            background-color: #151D4B;
-            color: #fff !important;
-            font-weight: 600;
-        }
-
-        #sidebar ul li.active > a i {
-            color: #fff;
-        }
-
-        h3 {
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
             text-align: center;
-            padding-bottom: 5px;
+            padding: 10px;
+            background-color: #415dd0;
+            color: white;
+            font-weight: 700;
         }
+
+        .top-controls .d-flex.gap-2 {
+            gap: 8px;
+        }
+
 
         .btn-pink {
             background-color: #ff69b4;
@@ -134,6 +145,72 @@
             color: white;
         }
 
+        .table thead th {
+            background-color: white;
+            color: black;
+            border: none;
+        }
+
+        .text {
+            margin-top: 18px;
+            margin-right: 10px;
+            margin-left: -4px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding-left: 35px;
+            padding-right: 60px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-container .fa-search {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            color: #aaa;
+            pointer-events: none;
+        }
+
+        .search-container input {
+            padding-left: 35px;
+        }
+
+        .pagination .page-link {
+            background-color: #ffffff;  /* pink */
+            color: rgb(0, 0, 0);
+        }
+
+        .pagination .page-link:hover {
+            background-color: #e0559f;
+            border-color: #e0559f;
+            color: white;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #e0559f;  /* dark blue */
+            color: white;
+            border-color: #e0559f;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background-color: #ccc;
+            color: #777;
+            border-color: #ccc;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .table-responsive {
+            margin-top: -15px;
+        }
 
         @media (max-width: 768px) {
             #sidebar {
@@ -147,18 +224,15 @@
             #sidebarCollapse span {
                 display: none;
             }
-        }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #415dd0;
-            color: white;
-            font-weight: 700;
-            z-index: 1;
+            .top-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-controls > div {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -183,7 +257,9 @@
             <li class="{{ Route::is('kelola.presensi') ? 'active' : '' }}">
                 <a href="{{ route('kelola.presensi') }}"><i class="fas fa-calendar-alt mr-2"></i>Kelola Presensi</a>
             </li>
-            <li><a href="{{ route('profil') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
+            <li class="{{ Route::is('profil') ? 'active' : '' }}">
+                <a href="{{ route('profil') }}"><i class="fas fa-user-cog"></i>Profil</a>
+            </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -206,66 +282,63 @@
                     <a href="#" class="text-white mr-3" title="Notifications">
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
-                    <a href="{{ route('profil') }}">
+                    <a href="{{ route('profile.edit') }}">
                         <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
                     </a>
                 </div>
             </div>
         </nav>
 
-        <!-- Main content goes here -->
-    <div class="container mt-4">
-    <h3 class="text-white font-weight-bold mb-4">Edit Admin</h3>
-    <form action="{{ route('update.admin', $user->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-    
-        <div class="form-group">
-            <label class="text-white font-weight-bold" for="nama_lengkap">Nama Lengkap</label>
-            <input type="text" name="nama_lengkap" class="form-control rounded" id="nama_lengkap" value="{{ old('nama_lengkap', $user->nama_lengkap) }}" placeholder="Masukkan nama lengkap" required>
-        </div>
-    
-        <div class="form-group">
-            <label class="text-white font-weight-bold" for="name">Username</label>
-            <input type="text" name="name" class="form-control rounded" id="name" value="{{ old('name', $user->name) }}" placeholder="Masukkan username" required>
-        </div>
-    
-        <div class="form-group">
-            <label class="text-white font-weight-bold" for="email">Email</label>
-            <input type="email" name="email" class="form-control rounded" id="email" value="{{ old('email', $user->email) }}" placeholder="Masukkan email" required>
-        </div>
-    
-        <div class="form-group">
-            <label class="text-white font-weight-bold" for="password">Password</label>
-            <input type="password" class="form-control rounded" id="password" placeholder="**********" disabled>
-        </div>
-    
-        <div class="form-group">
-            <label class="text-white font-weight-bold" for="id_role">Role</label>
-            
-        <select class="form-control rounded" id="id_role" disabled>
-            <option value="" disabled>Pilih Role</option>
-                @foreach ($roles as $role)
-            <option value="{{ $role->id }}" {{ (string) old('id_role', $user->id_role) === (string) $role->id ? 'selected' : '' }}>
-                    {{ $role->nama_role }}
-            </option>                
-                @endforeach
-        </select>
-        
-            <!-- Kirim value yang dipilih tetap ke server -->
-            <input type="hidden" name="id_role" value="{{ old('id_role', $user->id_role) }}">
+        <!-- Main content -->
+        <div class="container mt-4">
+            <div class="card shadow-sm bg-white p-4">
+                <h3 class="mb-4 text-center text-dark font-weight-bold">Profil Pengguna</h3>
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <img src="{{ asset('profile.jpg') }}" alt="Foto Profil" class="rounded-circle mb-3" width="150" height="150">
+                        <h5 class="text-dark">{{ Auth::user()->name }}</h5>
+                        <p class="text-muted">{{ Auth::user()->email }}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th class="text-dark">Nama Lengkap</th>
+                                <td>{{ Auth::user()->name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-dark">Email</th>
+                                <td>{{ Auth::user()->email }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-dark">Tanggal Bergabung</th>
+                                <td>{{ Auth::user()->created_at->format('d M Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-dark">Peran</th>
+                                <td>{{ Auth::user()->role ?? 'Pengguna' }}</td>
+                            </tr>
+                        </table>
+                        <a href="{{ route('profile.edit') }}" class="btn btn-pink mt-3">
+                            <i class="fas fa-edit"></i> Edit Profil
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
         
-    
-        <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary mr-2 px-4" onclick="history.back()">Cancel</button>
-            <button type="submit" class="btn btn-pink px-4">Simpan</button>
+
+                    <nav>
+                        <ul class="pagination justify-content-center mt-4">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-    </form>   
-    <br>
-    <br>
-    <br> 
-</div>
     </div>
 </div>
 
@@ -281,8 +354,39 @@
             $('#sidebar').toggleClass('active');
             $('.wrapper').toggleClass('toggled');
         });
+
+        $('#searchInput').on('keyup', function () {
+            let value = $(this).val().toLowerCase();
+            $('#adminTable tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
     });
 </script>
+
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
+
+@if(session('failed'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('failed') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
 
 </body>
 </html>
