@@ -337,7 +337,13 @@
                                         <td>{{ $presensi->user->role->nama_role ?? '-' }}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
-                                            <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                            <form action="{{ route('hapus.presensi', $presensi->id_presensi) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus Presensi" onclick="return confirm('Yakin ingin menghapus presensi ini?')">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>                                            
                                         </td>
                                     </tr>
                                 @endforeach

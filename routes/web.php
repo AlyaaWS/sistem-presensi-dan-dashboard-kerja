@@ -54,4 +54,6 @@ Route::get('/user', [EditPenggunaController::class, 'index'])->name('kelola.peng
 Route::get('/kelola-presensi', [KelolaPresensiController::class, 'index'])->name('kelola.presensi');
 Route::get('/tambah-presensi', [TambahPresensiController::class, 'index'])->name('tambah.presensi');
 Route::post('/tambah-presensi', [TambahPresensiController::class, 'store'])->name('tambah.presensi.store');
+Route::delete('/kelola-presensi/{id}', [KelolaPresensiController::class, 'hapus'])->name('hapus.presensi');
+
 require __DIR__.'/auth.php';
