@@ -13,7 +13,8 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
+
         @csrf
         @method('patch')
 
@@ -46,6 +47,26 @@
                 </div>
             @endif
         </div>
+
+        <div>
+            <x-input-label for="image" :value="__('Profile Picture')" />
+            <input id="image" name="image" type="file" class="mt-1 block w-full text-sm text-gray-500" accept="image/*">
+            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+        </div>
+
+        <div>
+        <x-input-label for="id_role" :value="__('Role')" />
+        <select name="id_role" id="id_role" class="mt-1 block w-full rounded border-gray-300 focus:border-indigo-500 focus:ring-indigo-500" required>
+            <option value="">-- Pilih Role --</option>
+            @foreach($roles as $role)
+                <option value="{{ $role->id_role }}" {{ old('id_role', $user->id_role) == $role->id_role ? 'selected' : '' }}>
+                    {{ $role->nama_role }}
+                </option>
+            @endforeach
+        </select>
+        <x-input-error class="mt-2" :messages="$errors->get('id_role')" />
+    </div>
+
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
