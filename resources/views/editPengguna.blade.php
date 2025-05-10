@@ -207,7 +207,7 @@
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
                     <a href="{{ route('profil') }}">
-                        <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>
                 </div>
             </div>
@@ -238,6 +238,14 @@
         <div class="form-group">
             <label class="text-white font-weight-bold" for="password">Password</label>
             <input type="password" class="form-control rounded" id="password" placeholder="**********" disabled>
+        </div>
+
+        <div class="form-group">
+            <label class="text-white font-weight-bold" for="status">Status</label>
+            <select name="status" class="form-control rounded" id="status" required>
+                <option value="active" {{ old('status', $user->status) === 'active' ? 'selected' : '' }}>Active</option>
+                <option value="non active" {{ old('status', $user->status) === 'non active' ? 'selected' : '' }}>Non Active</option>
+            </select>
         </div>
     
         <div class="form-group">

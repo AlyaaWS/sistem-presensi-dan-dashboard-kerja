@@ -189,7 +189,7 @@
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
                     <a href="{{ route('profil') }}">
-                        <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>
                 </div>
             </div>

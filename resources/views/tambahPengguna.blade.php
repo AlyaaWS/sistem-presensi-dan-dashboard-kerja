@@ -194,7 +194,7 @@
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
                     <a href="{{ route('profil') }}">
-                        <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
+                       <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>
                 </div>
             </div>
@@ -211,7 +211,7 @@
         </div>
         <div class="form-group">
             <label class="text-white font-weight-bold" for="nama_admin">Username</label>
-            <input type="text" name="name" class="form-control rounded" id="nama_admin" placeholder="Masukkan nama admin">
+            <input type="text" name="name" class="form-control rounded" id="nama_admin" placeholder="Masukkan username pengguna">
         </div>
         <div class="form-group">
             <label class="text-white font-weight-bold" for="email">Email</label>

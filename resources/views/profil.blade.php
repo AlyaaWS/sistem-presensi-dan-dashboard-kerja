@@ -138,6 +138,7 @@
             color: white;
             border-radius: 6px;
             font-weight: 540;
+            margin-left: 33px;
         }
 
         .btn-pink:hover {
@@ -212,6 +213,15 @@
             margin-top: -15px;
         }
 
+        h5 {
+            margin-top: 12px;
+        }
+
+        .table-borderless {
+            margin-left: 21px;
+        }
+
+
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
@@ -232,6 +242,10 @@
 
             .top-controls > div {
                 margin-bottom: 10px;
+            }
+
+            .btn-pink {
+                margin-left: 175px;
             }
         }
     </style>
@@ -283,7 +297,7 @@
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
                     <a href="{{ route('profile.edit') }}">
-                        <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>
                 </div>
             </div>
@@ -295,7 +309,7 @@
                 <h3 class="mb-4 text-center text-dark font-weight-bold">Profil Pengguna</h3>
                 <div class="row">
                     <div class="col-md-4 text-center">
-                        <img src="{{ asset('profile.jpg') }}" alt="Foto Profil" class="rounded-circle mb-3" width="150" height="150">
+                       <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="img-fluid rounded" style="max-width: 200px; height: 200px;">
                         <h5 class="text-dark">{{ Auth::user()->name }}</h5>
                         <p class="text-muted">{{ Auth::user()->email }}</p>
                     </div>
@@ -314,8 +328,8 @@
                                 <td>{{ Auth::user()->created_at->format('d M Y') }}</td>
                             </tr>
                             <tr>
-                                <th class="text-dark">Peran</th>
-                                <td>{{ Auth::user()->role ?? 'Pengguna' }}</td>
+                                <th class="text-dark">Role</th>
+                                <td>{{ $user->role->nama_role ?? '-' }}</td>
                             </tr>
                         </table>
                         <a href="{{ route('profile.edit') }}" class="btn btn-pink mt-3">
@@ -325,17 +339,6 @@
                 </div>
             </div>
         </div>
-        
-
-                    <nav>
-                        <ul class="pagination justify-content-center mt-4">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>

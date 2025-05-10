@@ -26,6 +26,18 @@
             transition: all 0.3s;
         }
 
+        .btn-pink {
+            background-color: #ff69b4;
+            color: white;
+            border-radius: 6px;
+            font-weight: 540;
+        }
+
+        .btn-pink:hover {
+            background-color: #e0559f;
+            color: white;
+        }
+
         #sidebar {
             width: 250px;
             background: #fff;
@@ -122,6 +134,10 @@
             padding-bottom: 5px;
         }
 
+        button .btn-secondary {
+            margin-top: 10px;
+        }
+
 
         @media (max-width: 768px) {
             #sidebar {
@@ -194,7 +210,7 @@
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
                     <a href="{{ route('profil') }}">
-                        <img src="{{ asset('profile.jpg') }}" alt="Profile" class="rounded-circle" style="width: 70px; height: 40px;">
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 50px; height: 50px;">
                     </a>
                 </div>
             </div>
@@ -202,7 +218,7 @@
 
         <!-- Main content goes here -->
     <div class="container mt-4">
-    <h3 class="text-white font-weight-bold mb-4">Tambah Pengguna</h3>
+    <h3 class="text-white font-weight-bold mb-4">Tambah Presensi</h3>
     <form action="{{ route('tambah.presensi.store') }}" method="POST">
         @csrf
         <div class="form-group">
@@ -220,15 +236,17 @@
         </div>
         <div class="form-group">
             <label>Waktu</label>
-            <input type="time" name="time" id="time" class="form-control rounded" step="1">
-            <button type="button" class="btn btn-secondary ml-2" onclick="isiWaktuSekarang()">Sekarang</button>
-        </div>
+            <div class="d-flex">
+                <input type="time" name="time" id="time" class="form-control rounded" step="1">
+                <button type="button" class="btn btn-secondary ml-2" onclick="isiWaktuSekarang()">Sekarang</button>
+            </div>
+        </div>        
         <div class="form-group">
             <label>Lokasi</label>
             <input type="text" name="location" class="form-control rounded" placeholder="Masukkan lokasi" required>
         </div>
         <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary px-4">Simpan</button>
+            <button type="submit" class="btn btn-pink px-4">Simpan</button>
         </div>
     </form>    
     <br>
