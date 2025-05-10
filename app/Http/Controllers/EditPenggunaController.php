@@ -35,6 +35,7 @@ class EditPenggunaController extends Controller
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }
+        $user->status = $request->status;
         $user->id_role = $request->id_role;
         $user->save();
 
