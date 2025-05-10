@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Role; // Tambahkan model Role jika belum
 
 class ProfileController extends Controller
 {
@@ -16,25 +17,32 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $roles = Role::all(); // Ambil semua role
         return view('profile.edit', [
             'user' => $request->user(),
+            'roles' => $roles
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
-        $request->user()->fill($request->validated());
+        $user = auth()->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->id_role = $request->id_role;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $user->image = $imagePath;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return redirect()->back()->with('success', 'Profile updated!');
     }
 
     /**
@@ -55,6 +63,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return redirect()->route('login')->with('success', 'Account successfully deleted.');
     }
 }
