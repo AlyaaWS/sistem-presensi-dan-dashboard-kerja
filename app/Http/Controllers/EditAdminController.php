@@ -34,6 +34,7 @@ class EditAdminController extends Controller
         }
 
         $user->id_role = $request->id_role;
+        $user->status = $request->status;
 
         $user->save();
 
