@@ -331,7 +331,8 @@
                         Tambah Role
                     </button>
                     <a href="{{ route('tambah.admin') }}" class="btn btn-pink mr-2">Tambah Admin</a>
-                    <a href="#" class="btn btn-pink">Unduh</a>
+                    <a href="{{ route('unduh.admin') }}" class="btn btn-pink mr-2">Unduh</a>
+
                 </div>
             </div>
 

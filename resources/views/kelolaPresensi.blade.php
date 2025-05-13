@@ -307,7 +307,7 @@
                 <div class="d-flex gap-2 mt-2 mt-md-0">
                     <a href="#" class="btn btn-pink mr-2">Atur Presensi</a>
                     <a href="{{ route('tambah.presensi') }}" class="btn btn-pink mr-2">Tambah Presensi</a>
-                    <a href="#" class="btn btn-pink">Unduh</a>
+                    <a href="{{ route('unduh.presensi') }}" class="btn btn-pink mr-2">Unduh</a>
                 </div>
             </div>
 

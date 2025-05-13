@@ -319,7 +319,7 @@
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
                     <a href="{{ route('tambah.pengguna') }}" class="btn btn-pink mr-2">Tambah Pengguna</a>
-                    <a href="#" class="btn btn-pink">Unduh</a>
+                    <a href="{{ route('unduh.user') }}" class="btn btn-pink mr-2">Unduh</a>
                 </div>
             </div>
             <div class="card">

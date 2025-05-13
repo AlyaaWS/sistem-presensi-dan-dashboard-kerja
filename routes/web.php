@@ -14,6 +14,22 @@ use App\Http\Controllers\EditPenggunaController;
 use App\Http\Controllers\EditPresensiController;
 use App\Http\Controllers\TambahPresensiController;
 use App\Http\Controllers\ProfilController;
+use App\Exports\AdminsExport;
+use App\Exports\UsersExport;
+use App\Exports\PresensiExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+//route export excel
+Route::get('/admin/unduh', function () {
+    return Excel::download(new AdminsExport, 'data_admin.xlsx');
+})->name('unduh.admin');
+Route::get('/user/unduh', function () {
+    return Excel::download(new UsersExport, "data_user.xlsx");
+})->name('unduh.user');
+Route::get('/export-presensi', function () {
+    return Excel::download(new PresensiExport, 'data_presensi.xlsx');
+})->name('unduh.presensi');
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,9 +76,15 @@ Route::delete('/kelola-presensi/{id}', [KelolaPresensiController::class, 'hapus'
 Route::put('/presensi/{id}', [EditPresensiController::class, 'update'])->name('update.presensi');
 Route::get('/presensi/{id}/edit', [EditPresensiController::class, 'edit'])->name('edit.presensi');
 
-
-
 //profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+
+//welcome user
+Route::get('/welcome-user', function () {
+    return view('users.welcomeUser');
+})->name('welcome.user');
+
+//login user
+
 
 require __DIR__.'/auth.php';

@@ -11,7 +11,7 @@ class KelolaPresensiController extends Controller
 {
     public function index()
     {
-        $presensis = Presensi::with('user.role')->get(); // Relasi: presensi → user → role
+        $presensis = Presensi::with('user.role')->get();
         return view('kelolaPresensi', compact('presensis'));
     }
     public function hapus($id)

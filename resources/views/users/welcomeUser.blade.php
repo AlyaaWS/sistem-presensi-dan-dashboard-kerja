@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Landing Page Admin</title>
+    <title>Landing Page User</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -105,11 +105,6 @@
 </head>
 <body>
 
-    <!-- Tombol ke halaman pengguna -->
-    <div class="user-link">
-        <a href="{{ route('welcome.user') }}">Halaman pengguna</a>
-    </div>
-
     <!-- Logo pojok kiri atas -->
     <div class="logo">
         <img src="{{ asset('logo.png') }}" alt="Logo">
@@ -120,11 +115,11 @@
 
     <!-- Konten Landing Page -->
     <div class="container">
-        <div class="landing-title">Selamat Datang Di<br>Dashboard Admin,</div>
+        <div class="landing-title">Selamat Datang Di<br>Dashboard User,</div>
         <div class="description">
-            Di sini, kamu bisa mengelola pengguna, memantau kehadiran, serta mengatur tugas dengan lebih efisien. Nikmati tampilan yang intuitif dan fitur otomatisasi yang memudahkan pekerjaanmu.
+            Di sini, kamu bisa presensi dengan mudah, dan mengatur tugas dengan lebih efisien. Nikmati tampilan yang intuitif dan fitur otomatisasi yang memudahkan pekerjaanmu.
         </div>
-        <a href="{{ route('login') }}" class="btn-pink">Login Admin</a>
+        <a href="{{ route('login') }}" class="btn-pink">Login Pengguna</a>
     </div>
 
     <!-- Footer -->
