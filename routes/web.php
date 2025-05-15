@@ -18,6 +18,10 @@ use App\Exports\AdminsExport;
 use App\Exports\UsersExport;
 use App\Exports\PresensiExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\WorkspaceController;
+use App\Http\Controllers\ProfilUserController;
+use App\Http\Controllers\BoardController;
 
 //route export excel
 Route::get('/admin/unduh', function () {
@@ -35,9 +39,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    // Admin dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // User dashboard
+    Route::get('/users/dashboardUser', function () {
+        return view('users.dashboardUser');
+    })->name('dashboard.user');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -79,12 +91,14 @@ Route::get('/presensi/{id}/edit', [EditPresensiController::class, 'edit'])->name
 //profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 
-//welcome user
-Route::get('/welcome-user', function () {
-    return view('users.welcomeUser');
-})->name('welcome.user');
-
-//login user
+//Sidebar User
+Route::get('/dahsboard-user', function () {
+    return view('users.dashboardUser');
+})->name('dashboard.user');
+Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi');
+Route::get('/workspace', [WorkspaceController::class, 'index'])->name('workspace');
+Route::get('/profil-user', [ProfilUserController::class, 'index'])->name('profil.user');
+Route::get('/board', [BoardController::class, 'index'])->name('board');
 
 
 require __DIR__.'/auth.php';

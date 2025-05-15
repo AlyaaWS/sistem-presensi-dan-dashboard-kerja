@@ -105,11 +105,6 @@
 </head>
 <body>
 
-    <!-- Tombol ke halaman pengguna -->
-    <div class="user-link">
-        <a href="{{ route('welcome.user') }}">Halaman pengguna</a>
-    </div>
-
     <!-- Logo pojok kiri atas -->
     <div class="logo">
         <img src="{{ asset('logo.png') }}" alt="Logo">
@@ -120,11 +115,11 @@
 
     <!-- Konten Landing Page -->
     <div class="container">
-        <div class="landing-title">Selamat Datang Di<br>Dashboard Admin,</div>
+        <div class="landing-title">Hai, Selamat Datang<br>di KerjaKu</div>
         <div class="description">
-            Di sini, kamu bisa mengelola pengguna, memantau kehadiran, serta mengatur tugas dengan lebih efisien. Nikmati tampilan yang intuitif dan fitur otomatisasi yang memudahkan pekerjaanmu.
+            Presensi mudah dengan QR code dan pantau produktivitas tim secara realtime dalam satu platform.
         </div>
-        <a href="{{ route('login') }}" class="btn-pink">Login Admin</a>
+        <a href="{{ route('login') }}" class="btn-pink">Login</a>
     </div>
 
     <!-- Footer -->

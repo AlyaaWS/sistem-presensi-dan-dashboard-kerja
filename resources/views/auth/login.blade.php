@@ -142,11 +142,6 @@
     }
 </style>
 
-<!-- Tombol ke halaman pengguna -->
-<div class="user-link">
-    <a href="#">Halaman pengguna</a>
-</div>
-
 <!-- Logo pojok kiri atas -->
 <div class="logo">
     <img src="{{ asset('logo.png') }}" alt="Logo">
@@ -157,7 +152,7 @@
 
 <!-- Form Login -->
 <div class="container">
-    <div class="login-title">Silakan Login Admin,</div>
+    <div class="login-title">Silakan Login,</div>
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />

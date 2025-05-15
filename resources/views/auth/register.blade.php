@@ -179,7 +179,7 @@
 
 <!-- Form Register -->
 <div class="container">
-    <div class="register-title">Silakan Register Admin,</div>
+    <div class="register-title">Silakan Register,</div>
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
