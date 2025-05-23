@@ -212,6 +212,33 @@
             margin-top: -15px;
         }
 
+        .custom-modal {
+        background-color: #1e2353;
+        border-radius: 15px;
+        padding: 20px;
+        }
+
+        .btn-pink {
+        background-color: #ff4fc0;
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        }
+
+        .btn-pink:hover {
+        background-color: #ff2cab;
+        }
+
+        .form-control {
+        border-radius: 10px;
+        border: none;
+        }
+
+        .modal-body label {
+        font-weight: 500;
+        }
+
+
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
@@ -305,7 +332,7 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-2 mt-md-0">
-                    <a href="#" class="btn btn-pink mr-2">Atur Presensi</a>
+                    <a href="#" class="btn btn-pink mr-2" data-toggle="modal" data-target="#aturPresensiModal">Atur Presensi</a>
                     <a href="{{ route('tambah.presensi') }}" class="btn btn-pink mr-2">Tambah Presensi</a>
                     <a href="{{ route('unduh.presensi') }}" class="btn btn-pink mr-2">Unduh</a>
                 </div>
@@ -415,5 +442,62 @@
     });
 </script>
 @endif
+
+<!-- Modal -->
+<div class="modal fade" id="aturPresensiModal" tabindex="-1" role="dialog" aria-labelledby="aturPresensiLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content custom-modal">
+
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-white" id="aturPresensiLabel">Atur Presensi</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="font-size: 1.5rem;">
+          &times;
+        </button>
+      </div>
+
+      <form action="{{ route('atur.presensi') }}" method="POST">
+        @csrf
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label class="text-white">Jam Mulai</label>
+            <input type="time" name="jam_mulai" class="form-control" value="07:00" required>
+          </div>
+
+          <div class="form-group">
+            <label class="text-white">Jam Berakhir</label>
+            <input type="time" name="jam_berakhir" class="form-control" value="08:30" required>
+          </div>
+
+          <div class="form-group">
+            <label class="text-white">Hari Presensi Aktif</label>
+            <div class="d-flex gap-2">
+              <input type="text" name="hari_mulai" class="form-control" value="Senin" required>
+              <span class="text-white px-2">-</span>
+              <input type="text" name="hari_berakhir" class="form-control" value="Jumat" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="text-white">Batas Scan Per User</label>
+            <input type="number" name="batas_scan" class="form-control" min="1" value="1" required>
+          </div>
+
+          <div class="form-group">
+            <label class="text-white">Lokasi</label>
+            <input type="text" name="lokasi" class="form-control" required>
+          </div>
+
+        </div>
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-pink btn-block">OK</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>

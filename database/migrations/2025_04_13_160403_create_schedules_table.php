@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('active_day');
             $table->integer('scan_limit');
             $table->string('location');
+            $table->string('qr_token')->nullable();
+            $table->timestamp('token_expired_at')->nullable();
         });
     }
 

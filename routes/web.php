@@ -22,6 +22,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\ProfilUserController;
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\ScheduleController;
 
 //route export excel
 Route::get('/admin/unduh', function () {
@@ -100,5 +101,11 @@ Route::get('/workspace', [WorkspaceController::class, 'index'])->name('workspace
 Route::get('/profil-user', [ProfilUserController::class, 'index'])->name('profil.user');
 Route::get('/board', [BoardController::class, 'index'])->name('board');
 
+//Atur presensi
+Route::post('/atur-presensi', [ScheduleController::class, 'store'])->name('atur.presensi');
+// generate QR dinamis
+Route::get('/generate-qr/{id}', [PresensiController::class, 'generateQr']);
+// ketika QR discan
+Route::get('/presensi/token/{token}', [PresensiController::class, 'scanQr'])->name('presensi.scan');
 
 require __DIR__.'/auth.php';

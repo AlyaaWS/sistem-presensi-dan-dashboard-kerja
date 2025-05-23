@@ -117,7 +117,6 @@
             color: #fff;
         }
 
-
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
@@ -173,8 +172,8 @@
                 </ul>
             </li>
             <li class="{{ Route::is('profil.user') ? 'active' : '' }}">
-                <a href="{{ route('profil.user') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
-            <li>
+                <a href="{{ route('profil.user') }}"><i class="fas fa-user-cog"></i>Profil</a>
+            </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -204,8 +203,26 @@
             </div>
         </nav>
 
-        <!-- Main content goes here -->
+        <!-- QR Section -->
+        <div class="text-center py-5">
+    <h3 class="text-white fw-bold">Silakan scan QR untuk presensi</h3>
+    <p class="text-muted" style="color: #cccccc !important;">
+        Jika anda mengalami kendala silakan hubungi 
+        <span style="color: #ff4d6d;"><strong>admin</strong></span>
+    </p>
+
+    <div id="qrcode" class="bg-white d-inline-block p-4 rounded my-4" style="border-radius: 20px;">
+        <!-- QR code akan dimuat di sini oleh JavaScript -->
     </div>
+
+    <p id="expired-time" class="text-white fs-4 fw-bold">00:59</p>
+
+        <button class="btn btn-pink mt-3 px-4 py-2 rounded-pill text-white" 
+        style="background-color: #ff69b4; font-size: 1.1rem; font-weight: 600;">
+         Scan Here!
+        </button>
+    </div>
+</div>
 </div>
 
 <div class="footer">@AALYAAS</div>
@@ -214,11 +231,73 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    const qrContainer = document.getElementById("qrcode");
+    const expiredText = document.getElementById("expired-time");
+
+    function fetchQRCode() {
+        fetch("/generate-qr/{{ $schedule->id_schedule ?? 0 }}")
+            .then(response => {
+                if (!response.ok) throw new Error("Jadwal tidak ditemukan");
+                return response.json();
+            })
+            .then(data => {
+                qrContainer.innerHTML = data.qr;
+                startCountdown(data.expired_at);
+            })
+            .catch(error => {
+                console.error("Gagal mengambil QR code:", error);
+                qrContainer.innerHTML = "<p class='text-danger'>QR tidak tersedia.</p>";
+                expiredText.textContent = "-";
+            });
+    }
+
+    function startCountdown(expiredAt) {
+        const expired = new Date(expiredAt);
+        const interval = setInterval(() => {
+            const now = new Date();
+            let seconds = Math.floor((expired - now) / 1000);
+
+            if (seconds <= 0) {
+            clearInterval(interval);
+            expiredText.textContent = "00:00:00";
+            qrContainer.innerHTML = `
+                <div class="text-danger fw-bold">Belum waktunya untuk presensi</div>
+            `;
+            return;
+        }
+
+            const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+            const secs = String(seconds % 60).padStart(2, '0');
+            expiredText.textContent = `${hrs}:${mins}:${secs}`;
+
+        }, 1000);
+    }
+
+    @if ($schedule)
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchQRCode(); // initial fetch
+
+        // Fetch QR baru setiap 60 detik
+        setInterval(fetchQRCode, 60000);
+    });
+    @endif
+</script>
+
 <script>
     $(document).ready(function () {
         $('#sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
             $('.wrapper').toggleClass('toggled');
+        });
+
+        $('#searchInput').on('keyup', function () {
+            let value = $(this).val().toLowerCase();
+            $('#adminTable tr').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
         });
     });
 </script>
