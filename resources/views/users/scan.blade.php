@@ -203,27 +203,12 @@
             </div>
         </nav>
 
-        <!-- QR Section -->
-        <div class="text-center py-5">
-    <h3 class="text-white fw-bold">Silakan scan QR untuk presensi</h3>
-    <p class="text-muted" style="color: #cccccc !important;">
-        Jika anda mengalami kendala silakan hubungi 
-        <span style="color: #ff4d6d;"><strong>admin</strong></span>
-    </p>
-
-    <div id="qrcode" class="bg-white d-inline-block p-4 rounded my-4" style="border-radius: 20px;">
-        <!-- QR code akan dimuat di sini oleh JavaScript -->
-    </div>
-
-    <p id="expired-time" class="text-white fs-4 fw-bold">00:59</p>
-
-        <a href="{{ route('presensi.scan.page') }}" 
-        class="btn btn-pink mt-3 px-4 py-2 rounded-pill text-white text-decoration-none d-inline-block" 
-        style="background-color: #ff69b4; font-size: 1.1rem; font-weight: 600;">
-            Scan Here!
-        </a>
-
-    </div>
+        <div class="container text-center text-white">
+            <h2>Scan QR Presensi</h2>
+            <p>Pastikan QR berada dalam kotak kamera.</p>
+            
+            <div id="reader" style="width: 300px; margin: 0 auto;"></div>
+</div>
 </div>
 </div>
 
@@ -233,60 +218,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    const qrContainer = document.getElementById("qrcode");
-    const expiredText = document.getElementById("expired-time");
-
-    function fetchQRCode() {
-        fetch("/generate-qr/{{ $schedule->id_schedule ?? 0 }}")
-            .then(response => {
-                if (!response.ok) throw new Error("Jadwal tidak ditemukan");
-                return response.json();
-            })
-            .then(data => {
-                qrContainer.innerHTML = data.qr;
-                startCountdown(data.expired_at);
-            })
-            .catch(error => {
-                console.error("Gagal mengambil QR code:", error);
-                qrContainer.innerHTML = "<p class='text-danger'>QR tidak tersedia.</p>";
-                expiredText.textContent = "-";
-            });
-    }
-
-    function startCountdown(expiredAt) {
-        const expired = new Date(expiredAt);
-        const interval = setInterval(() => {
-            const now = new Date();
-            let seconds = Math.floor((expired - now) / 1000);
-
-            if (seconds <= 0) {
-            clearInterval(interval);
-            expiredText.textContent = "00:00:00";
-            qrContainer.innerHTML = `
-                <div class="text-danger fw-bold">Belum waktunya untuk presensi</div>
-            `;
-            return;
-        }
-
-            const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
-            const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-            const secs = String(seconds % 60).padStart(2, '0');
-            expiredText.textContent = `${hrs}:${mins}:${secs}`;
-
-        }, 1000);
-    }
-
-    @if ($schedule)
-    document.addEventListener("DOMContentLoaded", () => {
-        fetchQRCode(); // initial fetch
-
-        // Fetch QR baru setiap 60 detik
-        setInterval(fetchQRCode, 60000);
-    });
-    @endif
-</script>
 
 <script>
     $(document).ready(function () {
@@ -301,6 +232,39 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+    });
+</script>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        console.log(`Scan berhasil: ${decodedText}`);
+        window.location.href = decodedText;
+    }
+
+    function onScanFailure(error) {
+        // Bisa tampilkan error kalau perlu
+        console.warn(`Scan gagal: ${error}`);
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    Html5Qrcode.getCameras().then(cameras => {
+        if (cameras && cameras.length) {
+            const cameraId = cameras[0].id;
+            html5QrCode.start(
+                cameraId,
+                {
+                    fps: 10,
+                    qrbox: 250
+                },
+                onScanSuccess,
+                onScanFailure
+            );
+        } else {
+            alert("Kamera tidak ditemukan.");
+        }
+    }).catch(err => {
+        console.error("Gagal memulai kamera:", err);
     });
 </script>
 

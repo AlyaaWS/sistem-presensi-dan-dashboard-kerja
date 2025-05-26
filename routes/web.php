@@ -107,5 +107,8 @@ Route::post('/atur-presensi', [ScheduleController::class, 'store'])->name('atur.
 Route::get('/generate-qr/{id}', [PresensiController::class, 'generateQr']);
 // ketika QR discan
 Route::get('/presensi/token/{token}', [PresensiController::class, 'scanQr'])->name('presensi.scan');
+Route::get('/presensi/scan', function () {
+    return view('users.scan');
+})->name('presensi.scan.page');
 
 require __DIR__.'/auth.php';
