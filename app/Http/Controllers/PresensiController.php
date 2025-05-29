@@ -122,8 +122,9 @@ class PresensiController extends Controller
             'time' => now()->toTimeString(),
             'location' => 'from qr scan',
             'id_user' => Auth::id(),
+            'id_schedule' => $schedule->id_schedule,
         ]);
 
-        return redirect('/users/presensi')->with('success', 'Presensi berhasil!');
+        return redirect('/presensi')->with('success', 'Presensi berhasil!');
     }
 }
