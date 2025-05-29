@@ -17,6 +17,8 @@ class Schedule extends Model
         'end_time',
         'active_day',
         'scan_limit',
-        'location'
+        'location',
+        'qr_token',
+        'token_expired_at',
     ];
 }
