@@ -18,6 +18,7 @@ class Presensi extends Model
         'time',
         'location',
         'id_user',
+        'id_schedule',
     ];
 
     public function user()
