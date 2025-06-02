@@ -116,6 +116,7 @@
         #sidebar ul li.active > a i {
             color: #fff;
         }
+        
 
         @media (max-width: 768px) {
             #sidebar {
@@ -207,7 +208,7 @@
             <h2>Scan QR Presensi</h2>
             <p>Pastikan QR berada dalam kotak kamera.</p>
             
-            <div id="reader" style="width: 300px; margin: 0 auto;"></div>
+            <div id="reader" style="width: 400px; margin: 0 auto;"></div>
 </div>
 </div>
 </div>
@@ -236,11 +237,27 @@
 </script>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     function onScanSuccess(decodedText, decodedResult) {
-        console.log(`Scan berhasil: ${decodedText}`);
-        window.location.href = decodedText;
-    }
+    console.log(`Scan berhasil: ${decodedText}`);
+    
+    Swal.fire({
+        title: 'Kirim presensi hari ini?',
+        text: "Pastikan kamu yakin!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#e0559f',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, kirim!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = decodedText;
+        }
+    });
+}
 
     function onScanFailure(error) {
         // Bisa tampilkan error kalau perlu
