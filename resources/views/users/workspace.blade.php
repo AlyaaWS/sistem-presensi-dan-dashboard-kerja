@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Workspace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap & FontAwesome -->
@@ -77,6 +77,12 @@
             font-weight: 600;
         }
 
+        #sidebar ul li.active > a {
+            background-color: #151D4B;
+            color: #fff !important;
+            font-weight: 600;
+        }
+
         #sidebar ul li a:hover i,
         .logout-link:hover i {
             color: #fff;
@@ -84,7 +90,7 @@
 
         #sidebarCollapse {
             margin-left: -15px;
-            order: -1
+            order: -1;
         }
 
         #content {
@@ -92,10 +98,6 @@
             padding: 20px;
             min-height: 100vh;
             transition: all 0.3s;
-        }
-
-        .wrapper.toggled #sidebar {
-            margin-left: -250px;
         }
 
         .navbar-light .navbar-nav .nav-link {
@@ -107,17 +109,123 @@
             color: #007bff !important;
         }
 
-        #sidebar ul li.active > a {
-            background-color: #151D4B;
-            color: #fff !important;
-            font-weight: 600;
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #415dd0;
+            color: white;
+            font-weight: 700;
         }
 
-        #sidebar ul li.active > a i {
+        .top-controls {
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        #entriesSelect {
+            width: 80px;
+        }
+
+        .text {
+            margin-bottom: 0;
             color: #fff;
+            margin-right: 10px;
         }
 
+        .search-container {
+            position: relative;
+            width: 200px;
+        }
 
+        .search-container .fa-search {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #aaa;
+            pointer-events: none;
+        }
+
+        .search-container input {
+            padding-left: 32px;
+        }
+
+        .btn-pink {
+            background-color: #ff69b4;
+            font-weight: 600;
+            color: white;
+            border-radius: 6px;
+        }
+
+        .btn-pink:hover {
+            background-color: #e0559f;
+            color: white;
+        }
+
+        .workspace-item {
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-custom {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-custom i {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.dropdown-menu-custom {
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 0;
+    background-color: #3f63f7; /* Warna biru */
+    border-radius: 12px;
+    padding: 16px;
+    z-index: 1000;
+    width: 200px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.dropdown-menu-custom h6 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    opacity: 0.9;
+}
+
+.dropdown-menu-custom a,
+.dropdown-menu-custom button {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    color: white;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-menu-custom a:hover,
+.dropdown-menu-custom button:hover {
+    text-decoration: underline;
+}
+
+/* Tampilkan dropdown saat ada class 'show' */
+.dropdown-menu-custom.show {
+    display: block;
+}
+
+        
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
@@ -130,17 +238,28 @@
             #sidebarCollapse span {
                 display: none;
             }
-        }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #415dd0;
-            color: white;
-            font-weight: 700;
+            .top-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-controls > div {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .search-container input {
+                width: 100%;
+            }
+
+            #entriesSelect {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -172,15 +291,14 @@
                     </li>
                 </ul>
             </li>
-
             <li class="{{ Route::is('profil.user') ? 'active' : '' }}">
-                <a href="{{ route('profil.user') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
-            <li>
+                <a href="{{ route('profil.user') }}"><i class="fas fa-user-cog"></i>Profil</a>
+            </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="logout-link">
-                        <i class="fas fa-sign-out-alt"></i>Logouttt
+                        <i class="fas fa-sign-out-alt"></i>Logout
                     </a>
                 </form>
             </li>
@@ -189,6 +307,7 @@
 
     <!-- Content -->
     <div id="content">
+        <!-- Navbar Atas -->
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #151D4B;">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -205,10 +324,73 @@
             </div>
         </nav>
 
-        <!-- Main content goes here -->
+        <!-- Konten Workspace -->
+        <div class="container mt-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center top-controls mb-3">
+                <div class="d-flex align-items-center">
+                    <label for="entriesSelect" class="mr-2 mb-0 text-white">Show</label>
+                    <select id="entriesSelect" class="form-control form-control-sm mr-2">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <p class="text text-white">entries</p>
+                    <div class="search-container ml-3">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Cari workspace...">
+                    </div>
+                </div>
+                <div class="mt-2 mt-md-0">
+                    <a href="#" class="btn btn-pink" data-toggle="modal" data-target="#addWorkspaceModal">Tambah Workspace</a>
+                </div>
+            </div>
+
+            <!-- Daftar Workspace -->
+            <div class="workspace-list">
+    @forelse ($workspaces as $workspace)
+        <div class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded">
+            <span>{{ $workspace->title }}</span>
+            <div class="dropdown-custom">
+                <i class="fas fa-ellipsis-v text-muted toggle-dropdown"></i>
+                <div class="dropdown-menu-custom">
+                    <h6>Workspace Actions</h6>
+                    <a href="#">Add workspace</a>
+                    <a href="#">Copy workspace</a>
+                    <form action="#" method="POST" onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete workspace</button>
+                    </form>
+                    <a href="#">Archive workspace</a>
+                    <a href="#">Rename workspace</a>
+                    <a href="#">View members</a>
+                </div>
+            </div>
+        </div>
+    @empty
+        <p class="text-white">Belum ada workspace</p>
+    @endforelse
+</div>
+
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+                <br>
+                <br>
+            </nav>
+        </div>
     </div>
 </div>
 
+<!-- Footer -->
 <div class="footer">@AALYAAS</div>
 
 <!-- Scripts -->
@@ -221,8 +403,72 @@
             $('#sidebar').toggleClass('active');
             $('.wrapper').toggleClass('toggled');
         });
+
+        $('#searchInput').on('keyup', function () {
+            let value = $(this).val().toLowerCase();
+            $('.workspace-item').filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggles = document.querySelectorAll('.toggle-dropdown');
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const dropdown = this.nextElementSibling;
+
+                // Tutup semua dropdown dulu
+                document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+                    if (menu !== dropdown) {
+                        menu.classList.remove('show');
+                    }
+                });
+
+                // Toggle dropdown ini
+                dropdown.classList.toggle('show');
+            });
+        });
+
+        // Tutup dropdown jika klik di luar
+        window.addEventListener('click', function (e) {
+            if (!e.target.matches('.toggle-dropdown')) {
+                document.querySelectorAll('.dropdown-menu-custom').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+    });
+</script>
+
+<!-- Modal Tambah Workspace -->
+<div class="modal fade" id="addWorkspaceModal" tabindex="-1" aria-labelledby="addWorkspaceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ route('workspace.store') }}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addWorkspaceModalLabel">Tambah Workspace</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nama">Nama Workspace</label>
+                        <input type="text" name="title" id="title" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-pink">Simpan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>
