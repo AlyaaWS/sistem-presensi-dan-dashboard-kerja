@@ -111,4 +111,6 @@ Route::get('/presensi/scan', function () {
     return view('users.scan');
 })->name('presensi.scan.page');
 
+Route::post('/workspace', [WorkspaceController::class, 'store'])->name('workspace.store');
+
 require __DIR__.'/auth.php';
