@@ -76,4 +76,31 @@ class WorkspaceController extends Controller
         return redirect()->route('workspace')->with('success', 'Workspace berhasil ditambahkan');
 
     }
+
+    public function copy($id)
+    {
+        $original = Workspace::findOrFail($id);
+
+        Workspace::create([
+            'title' => $original->title . ' (Copy)',
+            'id_user' => Auth::id(),
+            'archived' => false
+        ]);
+
+        return redirect()->route('workspace')->with('success', 'Workspace berhasil disalin');
+    }
+
+    public function rename(Request $request, $id)
+    {
+         $request->validate([
+              'title' => 'required|string|max:255',
+         ]);
+
+         $workspace = Workspace::findOrFail($id);
+         $workspace->title = $request->title;
+         $workspace->save();
+
+         return redirect()->route('workspace')->with('success', 'Workspace berhasil diganti namanya');
+    }
+
 }

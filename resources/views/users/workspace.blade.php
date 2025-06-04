@@ -355,15 +355,17 @@
                 <i class="fas fa-ellipsis-v text-muted toggle-dropdown"></i>
                 <div class="dropdown-menu-custom">
                     <h6>Workspace Actions</h6>
-                    <a href="#">Add workspace</a>
-                    <a href="#">Copy workspace</a>
-                    <form action="#" method="POST" onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
+                    <a href="#" data-toggle="modal" data-target="#addWorkspaceModal">Add workspace</a>
+                    <form action="{{ route('workspace.copy', $workspace->id_workspace) }}" method="POST">
+                        @csrf
+                        <button type="submit">Copy workspace</button>
+                    </form>
+                    <form action="{{ route('workspace.destroy', $workspace->id_workspace) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit">Delete workspace</button>
                     </form>
-                    <a href="#">Archive workspace</a>
-                    <a href="#">Rename workspace</a>
+                    <a href="#" data-toggle="modal" data-target="#renameModal{{ $workspace->id_workspace }}">Rename workspace</a>
                     <a href="#">View members</a>
                 </div>
             </div>
@@ -469,6 +471,31 @@
         </form>
     </div>
 </div>
+
+@foreach ($workspaces as $workspace)
+<div class="modal fade" id="renameModal{{ $workspace->id_workspace }}" tabindex="-1" aria-labelledby="renameModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+         <form method="POST" action="{{ route('workspace.rename', $workspace->id_workspace) }}">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+              <div class="modal-header">
+                   <h5 class="modal-title">Ganti Nama Workspace</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
+              </div>
+              <div class="modal-body">
+                   <input type="text" name="title" class="form-control" value="{{ $workspace->title }}" required>
+              </div>
+              <div class="modal-footer">
+                   <button type="submit" class="btn btn-primary">Simpan</button>
+              </div>
+            </div>
+         </form>
+     </div>
+</div>
+@endforeach
 
 </body>
 </html>

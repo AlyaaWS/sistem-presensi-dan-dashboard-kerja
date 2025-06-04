@@ -111,6 +111,14 @@ Route::get('/presensi/scan', function () {
     return view('users.scan');
 })->name('presensi.scan.page');
 
+//workspace
 Route::post('/workspace', [WorkspaceController::class, 'store'])->name('workspace.store');
+Route::post('/workspace/{id}/copy', [WorkspaceController::class, 'copy'])->name('workspace.copy');
+Route::delete('/workspace/{id}', [WorkspaceController::class, 'destroy'])->name('workspace.destroy');
+Route::put('/workspace/{id}/archive', [WorkspaceController::class, 'archive'])->name('workspace.archive');
+Route::get('/workspace/archived', [WorkspaceController::class, 'archived'])->name('workspace.archived');
+Route::put('/workspace/{id}/rename', [WorkspaceController::class, 'rename'])->name('workspace.rename');
+Route::put('/workspace/{id}/unarchive', [WorkspaceController::class, 'unarchive'])->name('workspace.unarchive');
+
 
 require __DIR__.'/auth.php';
