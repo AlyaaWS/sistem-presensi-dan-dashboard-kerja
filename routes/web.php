@@ -99,7 +99,6 @@ Route::get('/dahsboard-user', function () {
 Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi');
 Route::get('/workspace', [WorkspaceController::class, 'index'])->name('workspace');
 Route::get('/profil-user', [ProfilUserController::class, 'index'])->name('profil.user');
-Route::get('/board', [BoardController::class, 'index'])->name('board');
 
 //Atur presensi
 Route::post('/atur-presensi', [ScheduleController::class, 'store'])->name('atur.presensi');
@@ -119,6 +118,10 @@ Route::put('/workspace/{id}/archive', [WorkspaceController::class, 'archive'])->
 Route::get('/workspace/archived', [WorkspaceController::class, 'archived'])->name('workspace.archived');
 Route::put('/workspace/{id}/rename', [WorkspaceController::class, 'rename'])->name('workspace.rename');
 Route::put('/workspace/{id}/unarchive', [WorkspaceController::class, 'unarchive'])->name('workspace.unarchive');
+
+//board
+Route::get('/workspace/{id}/boards', [BoardController::class, 'index'])->name('workspace.boards');
+Route::post('/boards', [BoardController::class, 'store'])->name('board.store');
 
 
 require __DIR__.'/auth.php';

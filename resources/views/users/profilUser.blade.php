@@ -273,9 +273,6 @@
                     <li class="{{ Route::is('workspace') ? 'active' : '' }}">
                         <a href="{{ route('workspace') }}"><i class="fas fa-user-shield mr-2"></i>Workspace</a>
                     </li>
-                    <li class="{{ Route::is('board') ? 'active' : '' }}">
-                        <a href="{{ route('board') }}"><i class="fas fa-user-shield mr-2"></i>Board</a>
-                    </li>
                 </ul>
             </li>
             <li class="{{ Route::is('profil.user') ? 'active' : '' }}">

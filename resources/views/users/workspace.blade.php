@@ -215,6 +215,16 @@
     cursor: pointer;
 }
 
+.workspace-list a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.workspace-list a:hover {
+    text-decoration: none;
+}
+
+
 .dropdown-menu-custom a:hover,
 .dropdown-menu-custom button:hover {
     text-decoration: underline;
@@ -286,9 +296,6 @@
                     <li class="{{ Route::is('workspace') ? 'active' : '' }}">
                         <a href="{{ route('workspace') }}"><i class="fas fa-user-shield mr-2"></i>Workspace</a>
                     </li>
-                    <li class="{{ Route::is('board') ? 'active' : '' }}">
-                        <a href="{{ route('board') }}"><i class="fas fa-user-shield mr-2"></i>Board</a>
-                    </li>
                 </ul>
             </li>
             <li class="{{ Route::is('profil.user') ? 'active' : '' }}">
@@ -348,31 +355,35 @@
 
             <!-- Daftar Workspace -->
             <div class="workspace-list">
-    @forelse ($workspaces as $workspace)
-        <div class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded">
-            <span>{{ $workspace->title }}</span>
-            <div class="dropdown-custom">
-                <i class="fas fa-ellipsis-v text-muted toggle-dropdown"></i>
-                <div class="dropdown-menu-custom">
-                    <h6>Workspace Actions</h6>
-                    <a href="#" data-toggle="modal" data-target="#addWorkspaceModal">Add workspace</a>
-                    <form action="{{ route('workspace.copy', $workspace->id_workspace) }}" method="POST">
-                        @csrf
-                        <button type="submit">Copy workspace</button>
-                    </form>
-                    <form action="{{ route('workspace.destroy', $workspace->id_workspace) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete workspace</button>
-                    </form>
-                    <a href="#" data-toggle="modal" data-target="#renameModal{{ $workspace->id_workspace }}">Rename workspace</a>
-                    <a href="#">View members</a>
-                </div>
+@forelse ($workspaces as $workspace)
+    <div onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'"
+         class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
+         style="cursor: pointer; position: relative;">
+        
+        <span>{{ $workspace->title }}</span>
+
+        <div class="dropdown-custom" onclick="event.stopPropagation();">
+            <i class="fas fa-ellipsis-v text-muted toggle-dropdown"></i>
+            <div class="dropdown-menu-custom">
+                <h6>Workspace Actions</h6>
+                <a href="#" data-toggle="modal" data-target="#addWorkspaceModal">Add workspace</a>
+                <form action="{{ route('workspace.copy', $workspace->id_workspace) }}" method="POST">
+                    @csrf
+                    <button type="submit">Copy workspace</button>
+                </form>
+                <form action="{{ route('workspace.destroy', $workspace->id_workspace) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete workspace</button>
+                </form>
+                <a href="#" data-toggle="modal" data-target="#renameModal{{ $workspace->id_workspace }}">Rename workspace</a>
+                <a href="#">View members</a>
             </div>
         </div>
-    @empty
-        <p class="text-white">Belum ada workspace</p>
-    @endforelse
+    </div>
+@empty
+    <p class="text-white">Belum ada workspace</p>
+@endforelse
 </div>
 
 
@@ -445,6 +456,18 @@
         });
     });
 </script>
+
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
 
 <!-- Modal Tambah Workspace -->
 <div class="modal fade" id="addWorkspaceModal" tabindex="-1" aria-labelledby="addWorkspaceModalLabel" aria-hidden="true">
