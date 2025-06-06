@@ -8,11 +8,13 @@ use App\Models\Board;
 class BoardController extends Controller
 {
      public function index($id)
-     {
-         $workspace = Workspace::findOrFail($id);
-         // nanti bisa ambil boards, list, task dll, sekarang dummy dulu
-         return view('users.boards', compact('workspace'));
-     }
+    {
+        $workspace = Workspace::findOrFail($id);
+        $boards = Board::where('id_workspace', $id)->get();
+
+        return view('users.boards', compact('workspace', 'boards'));
+    }
+
 
      public function store(Request $request)
     {
