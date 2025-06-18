@@ -23,6 +23,8 @@ use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\ProfilUserController;
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\DashboardAdminController;
 
 //route export excel
 Route::get('/admin/unduh', function () {
@@ -42,15 +44,16 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     // Admin dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
 
     // User dashboard
     Route::get('/users/dashboardUser', function () {
         return view('users.dashboardUser');
     })->name('dashboard.user');
 });
+
+Route::put('/dashboard-admin/{id}/aktifkan', [DashboardAdminController::class, 'aktifkan'])->name('dashboard.admin.aktifkan');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -122,6 +125,23 @@ Route::put('/workspace/{id}/unarchive', [WorkspaceController::class, 'unarchive'
 //board
 Route::get('/workspace/{id}/boards', [BoardController::class, 'index'])->name('workspace.boards');
 Route::post('/boards', [BoardController::class, 'store'])->name('board.store');
+Route::post('/tasks', [TaskController::class, 'store'])->name('task.store');
+Route::patch('/tasks/{id}/check', [TaskController::class, 'check'])->name('task.check');
+Route::delete('/tasks/{id}', [TaskController::class, 'destroy'])->name('task.destroy');
+Route::delete('/boards/{id}', [BoardController::class, 'destroy'])->name('board.destroy');
+Route::post('/boards/{id}/copy', [BoardController::class, 'copy'])->name('board.copy');
+Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('task.update');
+Route::patch('/boards/{id}', [BoardController::class, 'rename'])->name('board.rename');
+Route::patch('/tasks/{id}/toggle', [TaskController::class, 'toggle'])->name('task.toggle');
+Route::post('/workspace/invite', [WorkspaceController::class, 'invite'])->name('workspace.invite');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard-admin', [DashboardAdminController::class, 'index'])->name('dashboard.admin');
+    Route::put('/dashboard-admin/{id}/aktifkan', [DashboardAdminController::class, 'aktifkan'])->name('dashboard.admin.aktifkan');
+});
+
 
 
 require __DIR__.'/auth.php';

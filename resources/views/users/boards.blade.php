@@ -256,6 +256,17 @@ body {
      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+.completed-task {
+     background-color: #d4edda !important; /* hijau muda */
+     opacity: 0.85;
+}
+
+.completed-task .task-text {
+     text-decoration: line-through;
+     color: #4b4b4b;
+}
+
+
 .dropdown-menu-custom h6 {
      margin-bottom: 12px;
      font-size: 16px;
@@ -404,11 +415,21 @@ body {
               <i class="fas fa-ellipsis-h text-muted" onclick="toggleDropdown(this)"></i>
               <div class="dropdown-menu-custom">
                    <h6>Board Actions</h6>
-                   <button type="button">Add board</button>
-                   <button type="button">Copy board</button>
-                   <button type="button">Delete board</button>
+                   <button type="button" data-toggle="modal" data-target="#addBoardModal">Add board</button>
+                   <form method="POST" action="{{ route('board.copy', $board->id_board) }}">
+                     @csrf
+                     <button type="submit">Copy board</button>
+                    </form>
+                   <form method="POST" action="{{ route('board.destroy', $board->id_board) }}">
+                     @csrf
+                     @method('DELETE')
+                     <button type="submit" onclick="return confirm('Hapus board ini?')">Delete board</button>
+                    </form>
                    <button type="button">Archive board</button>
-                   <button type="button">Rename board</button>
+                   <button type="button" data-toggle="modal" data-target="#renameBoardModal"
+                     onclick="$('#renameBoardForm').attr('action', '/boards/{{ $board->id_board }}'); $('#board-title').val('{{ $board->title }}')">
+                     Rename board
+                    </button>
                    <button type="button">Change color</button>
               </div>
             </div>
@@ -416,35 +437,39 @@ body {
 
          <!-- Task List -->
          <div class="task-list">
-            <!-- Dummy task -->
-            <div class="task-box bg-light p-2 rounded mb-2">
-              <div class="d-flex justify-content-between align-items-center">
-                   <div class="d-flex align-items-center">
-                       <input type="checkbox" class="mr-2" checked>
-                       <span>Membuat tampilan admin</span>
-                   </div>
-                   <div>
-                       <i class="fas fa-pencil-alt mr-2"></i>
-                       <i class="fas fa-trash"></i>
-                   </div>
-              </div>
-              <div class="badge badge-dark mt-2">1 dec 2024 - 5 dec 2024</div>
-              <div class="mt-2 d-flex">
-                   <img src="https://i.pravatar.cc/30?img=1" class="rounded-circle mr-1" style="width: 25px;">
-                   <img src="https://i.pravatar.cc/30?img=2" class="rounded-circle mr-1" style="width: 25px;">
-                   <img src="https://i.pravatar.cc/30?img=3" class="rounded-circle mr-1" style="width: 25px;">
-              </div>
-            </div>
+     @foreach ($board->tasks as $task)
+         <div class="task-box bg-light p-2 rounded mb-2 {{ $task->status_progress === 'selesai' ? 'completed-task' : '' }}">
+     <div class="d-flex justify-content-between align-items-center">
+         <div class="d-flex align-items-center">
+            <input type="checkbox"
+             class="mr-2 task-check"
+             data-id="{{ $task->id_task }}"
+             {{ $task->status_progress === 'selesai' ? 'checked' : '' }}>
+            <span class="task-text">{{ $task->description }}</span>
          </div>
+         <div>
+            <i class="fas fa-pencil-alt edit-task"
+             data-id="{{ $task->id_task }}"
+             data-description="{{ $task->description }}"
+             data-date="{{ $task->due_date }}"
+             data-toggle="modal" data-target="#editTaskModal"
+             style="cursor: pointer;"></i>
+            <i class="fas fa-trash delete-task ml-2" data-id="{{ $task->id_task }}" style="cursor:pointer;"></i>
+         </div>
+     </div>
+     <div class="badge badge-dark mt-2">
+         Tenggat: {{ \Carbon\Carbon::parse($task->due_date)->translatedFormat('d M Y') }}
+     </div>
+</div>
+
+     @endforeach
+</div>
+
 
          <!-- Tombol Add Task -->
          <button class="btn btn-primary btn-sm mt-2" data-toggle="modal" data-target="#addTaskModal" data-board="{{ $board->id_board }}">Add +</button>
      </div>
 </div>
-
-
-
-
     @endforeach
 
     {{-- Kolom tambah board --}}
@@ -486,6 +511,39 @@ body {
     });
 </script>
 
+<!-- Modal Edit Task -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+  <form method="POST" action="" id="editTaskForm">
+   @csrf
+   @method('PATCH')
+   <div class="modal-content rounded-4" style="background-color: #ff69b4; color: white;">
+    <div class="modal-header border-0">
+     <h5 class="modal-title font-weight-bold" id="editTaskModalLabel">Edit Tugas</h5>
+     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+     </button>
+    </div>
+    <div class="modal-body">
+     <div class="form-group">
+      <label for="edit-description" class="font-weight-bold">Deskripsi</label>
+      <textarea name="description" class="form-control rounded" id="edit-description" rows="3" required></textarea>
+     </div>
+     <div class="form-group">
+      <label for="edit-due-date" class="font-weight-bold">Tenggat Berakhir</label>
+      <input type="date" name="due_date" class="form-control rounded-pill" id="edit-due-date" required>
+     </div>
+    </div>
+    <div class="modal-footer border-0">
+     <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Batal</button>
+     <button type="submit" class="btn btn-dark rounded-pill px-4">Simpan</button>
+    </div>
+   </div>
+  </form>
+ </div>
+</div>
+
+
 <!-- Modal Tambah Board -->
 <div class="modal fade" id="addBoardModal" tabindex="-1" role="dialog" aria-labelledby="addBoardModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -514,31 +572,66 @@ body {
   </div>
 </div>
 
+<!-- Modal Rename Board -->
+<div class="modal fade" id="renameBoardModal" tabindex="-1" role="dialog" aria-labelledby="renameBoardModalLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <form method="POST" action="" id="renameBoardForm">
+            @csrf
+            @method('PATCH')
+            <div class="modal-content rounded-4">
+              <div class="modal-header">
+                   <h5 class="modal-title font-weight-bold" id="renameBoardModalLabel">Rename Board</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
+              </div>
+              <div class="modal-body">
+                   <div class="form-group">
+                       <label for="board-title">Judul Board</label>
+                       <input type="text" class="form-control" name="title" id="board-title" required>
+                   </div>
+              </div>
+              <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                   <button type="submit" class="btn btn-primary">Simpan</button>
+              </div>
+            </div>
+         </form>
+     </div>
+</div>
+
+
 <!-- Modal Tambah Task -->
 <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
      <div class="modal-dialog" role="document">
-         <div class="modal-content rounded-4" style="background-color: #ff69b4; color: white;">
-            <div class="modal-header border-0">
-              <h5 class="modal-title font-weight-bold" id="addTaskModalLabel">Task Week 1 <i class="fas fa-palette ml-2"></i></h5>
-              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                   <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                   <label for="task-desc" class="font-weight-bold">Deskripsi</label>
-                   <textarea class="form-control rounded" id="task-desc" rows="3" placeholder="Add more detail description ..."></textarea>
+         <form method="POST" action="{{ route('task.store') }}">
+            @csrf
+            <input type="hidden" name="id_board" id="task-board-id">
+            <input type="hidden" name="status_progress" value="belum">
+            <input type="hidden" name="color" value="ijo">
+            <div class="modal-content rounded-4" style="background-color: #ff69b4; color: white;">
+              <div class="modal-header border-0">
+                   <h5 class="modal-title font-weight-bold" id="addTaskModalLabel">Tambah Tugas</h5>
+                   <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                   </button>
               </div>
-              <div class="form-group">
-                <label for="due_date_start">Mulai</label>
-                <input type="date" class="form-control" name="due_date_start" id="due_date_start" required>
+              <div class="modal-body">
+                   <div class="form-group">
+                       <label for="description" class="font-weight-bold">Deskripsi</label>
+                       <textarea name="description" class="form-control rounded" rows="3" required></textarea>
+                   </div>
+                   <div class="form-group">
+                       <label for="due_date" class="font-weight-bold">Due to</label>
+                       <input type="date" name="due_date" class="form-control rounded-pill" required>
+                   </div>
+              </div>
+              <div class="modal-footer border-0">
+                   <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+                   <button type="submit" class="btn btn-dark rounded-pill px-4">Simpan</button>
+              </div>
             </div>
-            </div>
-            <div class="modal-footer border-0">
-              <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-dark rounded-pill px-4" id="save-task-btn">Save</button>
-            </div>
-         </div>
+         </form>
      </div>
 </div>
 
@@ -547,42 +640,8 @@ let currentBoard = null;
 
 $('#addTaskModal').on('show.bs.modal', function (event) {
      const button = $(event.relatedTarget);
-     currentBoard = button.data('board'); // ID board kalau dinamis nanti
-});
-
-$('#save-task-btn').click(function () {
-     const desc = $('#task-desc').val().trim();
-     const date = $('#due-date').val().trim();
-
-     if (desc === '' || date === '') return;
-
-     const taskHTML = `
-         <div class="task-box bg-light p-2 rounded mb-2">
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="d-flex align-items-center">
-                   <input type="checkbox" class="mr-2" checked>
-                   <span>${desc}</span>
-              </div>
-              <div>
-                   <i class="fas fa-pencil-alt mr-2"></i>
-                   <i class="fas fa-trash"></i>
-              </div>
-            </div>
-            <div class="badge badge-dark mt-2">${date}</div>
-            <div class="mt-2 d-flex">
-              <img src="https://i.pravatar.cc/30?img=1" class="rounded-circle mr-1" style="width: 25px;">
-              <img src="https://i.pravatar.cc/30?img=2" class="rounded-circle mr-1" style="width: 25px;">
-              <img src="https://i.pravatar.cc/30?img=3" class="rounded-circle mr-1" style="width: 25px;">
-            </div>
-         </div>
-     `;
-
-     const column = $(`button[data-board="${currentBoard}"]`).closest('.card-column');
-     column.find('.task-list').append(taskHTML);
-
-     $('#task-desc').val('');
-     $('#due-date').val('');
-     $('#addTaskModal').modal('hide');
+     const boardId = button.data('board');
+     $('#task-board-id').val(boardId);
 });
 </script>
 
@@ -644,8 +703,66 @@ $('#save-task-btn').click(function () {
 
      // Checklist styling (optional)
      $(document).on('change', '.task-check', function () {
-         $(this).siblings('.task-text').toggleClass('text-muted text-decoration-line-through');
+     const id = $(this).data('id');
+     $.ajax({
+         url: `/tasks/${id}/check`,
+         method: 'PATCH',
+         data: {
+            _token: '{{ csrf_token() }}'
+         },
+         success: function () {
+            // opsional: centang garis tengah
+         }
      });
+});
+
+$(document).on('click', '.delete-task', function () {
+     const id = $(this).data('id');
+     if (confirm('Yakin ingin hapus task ini?')) {
+         $.ajax({
+            url: `/tasks/${id}`,
+            type: 'DELETE',
+            data: { _token: '{{ csrf_token() }}' },
+            success: function () {
+              location.reload();
+            }
+         });
+     }
+});
+
+// Edit Task
+$('.edit-task').on('click', function () {
+     const id = $(this).data('id');
+     $('#edit-description').val($(this).data('description'));
+     $('#edit-due-date').val($(this).data('date'));
+     $('#editTaskForm').attr('action', `/tasks/${id}`);
+});
+
+$(document).on('change', '.task-check', function () {
+     const id = $(this).data('id');
+     const checkbox = $(this);
+     const box = checkbox.closest('.task-box');
+
+     $.ajax({
+         url: `/tasks/${id}/toggle`,
+         method: 'POST', // ← WAJIB pakai POST
+         data: {
+            _token: '{{ csrf_token() }}',
+            _method: 'PATCH' // ← PATCH override
+         },
+         success: function (res) {
+            if (res.status === 'selesai') {
+              box.addClass('completed-task');
+            } else {
+              box.removeClass('completed-task');
+            }
+         }
+     });
+});
+
+
+
+
 </script>
 
 

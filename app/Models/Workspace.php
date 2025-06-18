@@ -27,4 +27,18 @@ class Workspace extends Model
         return $this->hasMany(Board::class, 'id_workspace');
     }
 
+    public function tasks()
+    {
+     return $this->hasMany(Task::class, 'id_board');
+    }
+
+    public function members()
+    {
+     return $this->belongsToMany(User::class, 'workspace_user', 'id_workspace', 'id_user')
+              ->withPivot('role_in_workspace')
+              ->withTimestamps();
+    }
+
+
+
 }

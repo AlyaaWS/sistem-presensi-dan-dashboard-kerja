@@ -196,8 +196,44 @@
         </nav>
 
         <!-- Main content goes here -->
-    </div>
+
+        <div class="container mt-4">
+    <h2 class="text-white">Pengguna Menunggu Persetujuan</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    <table class="table table-bordered bg-white text-dark">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($pendingUsers as $user)
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>
+                        <form action="{{ route('dashboard.admin.aktifkan', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button class="btn btn-success btn-sm" type="submit">Aktifkan</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3">Tidak ada pengguna baru.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
+
 
 <div class="footer">@AALYAAS</div>
 

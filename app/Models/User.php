@@ -60,4 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Presensi::class, 'id_user');
     }
 
+    public function workspaces()
+    {
+     return $this->belongsToMany(Workspace::class, 'workspace_user', 'id_user', 'id_workspace')
+              ->withPivot('role_in_workspace')
+              ->withTimestamps();
+    }
+
 }

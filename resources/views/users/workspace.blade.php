@@ -274,7 +274,6 @@
     </style>
 </head>
 <body>
-
 <div class="wrapper">
     <!-- Sidebar -->
     <nav id="sidebar">
@@ -294,7 +293,8 @@
                 </a>
                 <ul class="collapse list-unstyled {{ request()->is('workspace*') ? 'show' : '' }}" id="workspaceSubmenu">
                     <li class="{{ Route::is('workspace') ? 'active' : '' }}">
-                        <a href="{{ route('workspace') }}"><i class="fas fa-user-shield mr-2"></i>Workspace</a>
+                        <a href="{{ route('workspace.boards', Auth::user()->workspaces->first()->id_workspace ?? 0) }}">
+                         <i class="fas fa-user-shield mr-2"></i>Workspace</a>
                     </li>
                 </ul>
             </li>
@@ -355,10 +355,10 @@
 
             <!-- Daftar Workspace -->
             <div class="workspace-list">
-@forelse ($workspaces as $workspace)
-    <div onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'"
-         class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
-         style="cursor: pointer; position: relative;">
+            @forelse ($workspaces as $workspace)
+            <div onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'"
+                class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
+                style="cursor: pointer; position: relative;">
         
         <span>{{ $workspace->title }}</span>
 
@@ -377,7 +377,9 @@
                     <button type="submit">Delete workspace</button>
                 </form>
                 <a href="#" data-toggle="modal" data-target="#renameModal{{ $workspace->id_workspace }}">Rename workspace</a>
-                <a href="#">View members</a>
+                <button class="dropdown-item" data-toggle="modal" data-target="#viewMembersModal{{ $workspace->id_workspace }}">
+                    <i class="fas fa-users mr-2"></i>View Members
+                </button>
             </div>
         </div>
     </div>
@@ -424,6 +426,8 @@
             });
         });
     });
+
+    
 </script>
 
 <script>
@@ -494,31 +498,6 @@
         </form>
     </div>
 </div>
-
-@foreach ($workspaces as $workspace)
-<div class="modal fade" id="renameModal{{ $workspace->id_workspace }}" tabindex="-1" aria-labelledby="renameModalLabel" aria-hidden="true">
-     <div class="modal-dialog">
-         <form method="POST" action="{{ route('workspace.rename', $workspace->id_workspace) }}">
-            @csrf
-            @method('PUT')
-            <div class="modal-content">
-              <div class="modal-header">
-                   <h5 class="modal-title">Ganti Nama Workspace</h5>
-                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                   </button>
-              </div>
-              <div class="modal-body">
-                   <input type="text" name="title" class="form-control" value="{{ $workspace->title }}" required>
-              </div>
-              <div class="modal-footer">
-                   <button type="submit" class="btn btn-primary">Simpan</button>
-              </div>
-            </div>
-         </form>
-     </div>
-</div>
-@endforeach
 
 </body>
 </html>

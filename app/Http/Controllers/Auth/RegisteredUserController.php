@@ -39,11 +39,12 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'status' => 'non active',
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        return redirect('/login')->with('status', 'Akun Anda berhasil didaftarkan. Tunggu verifikasi admin.');
 
         return redirect(route('dashboard', absolute: false));
     }

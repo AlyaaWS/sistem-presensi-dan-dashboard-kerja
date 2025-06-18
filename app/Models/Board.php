@@ -19,4 +19,10 @@ class Board extends Model
      {
          return $this->belongsTo(Workspace::class, 'id_workspace');
      }
+
+     public function tasks()
+    {
+        return $this->hasMany(Task::class, 'id_board');
+    }
+
 }

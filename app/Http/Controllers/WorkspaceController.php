@@ -103,4 +103,22 @@ class WorkspaceController extends Controller
          return redirect()->route('workspace')->with('success', 'Workspace berhasil diganti namanya');
     }
 
+    public function invite(Request $request)
+    {
+         $request->validate([
+             'email' => 'required|email|exists:users,email',
+             'id_workspace' => 'required|exists:workspaces,id_workspace'
+         ]);
+
+         $user = User::where('email', $request->email)->first();
+         $workspace = Workspace::findOrFail($request->id_workspace);
+
+         $workspace->members()->syncWithoutDetaching([
+             $user->id => ['role_in_workspace' => 'member']
+         ]);
+
+         return back()->with('success', 'User berhasil ditambahkan ke workspace.');
+    }
+
+
 }
