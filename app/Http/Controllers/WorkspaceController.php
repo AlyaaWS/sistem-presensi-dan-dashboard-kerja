@@ -26,21 +26,26 @@ class WorkspaceController extends Controller
 
     // Simpan workspace baru
     public function store(Request $request)
-    {
-        $request->validate([
+{
+    $request->validate([
         'title' => 'required|string|max:255',
     ]);
 
-        Workspace::create([
+    $workspace = Workspace::create([
         'title' => $request->title,
         'id_user' => Auth::id(),
         'archived' => false
-        
     ]);
 
-        return redirect()->route('workspace')->with('success', 'Workspace berhasil ditambahkan');
+    // Tambahkan pembuat workspace sebagai anggota yang langsung accepted
+    $workspace->members()->attach(Auth::id(), [
+        'role_in_workspace' => 'owner',
+        'status' => 'accepted',
+    ]);
 
-    }
+    return redirect()->route('workspace')->with('success', 'Workspace berhasil ditambahkan');
+}
+
 
     // Tampilkan form edit
     public function edit($id)
@@ -113,11 +118,48 @@ class WorkspaceController extends Controller
          $user = User::where('email', $request->email)->first();
          $workspace = Workspace::findOrFail($request->id_workspace);
 
-         $workspace->members()->syncWithoutDetaching([
-             $user->id => ['role_in_workspace' => 'member']
-         ]);
+          $workspace->members()->syncWithoutDetaching([
+        $user->id => [
+            'role_in_workspace' => 'member',
+            'status' => 'pending',
+        ]
+    ]);
 
          return back()->with('success', 'User berhasil ditambahkan ke workspace.');
+    }
+
+    
+    public function accept($id)
+    {
+        $workspace = Workspace::findOrFail($id);
+        Auth::user()->workspaces()->updateExistingPivot($workspace->id_workspace, ['status' => 'accepted']);
+        return back()->with('success', 'Berhasil bergabung dengan workspace!');
+    }
+
+    public function reject($id)
+    {
+        $workspace = Workspace::findOrFail($id);
+        Auth::user()->workspaces()->detach($workspace->id_workspace);
+        return back()->with('success', 'Undangan ditolak.');
+    }
+
+    public function removeMember($workspaceId, $userId)
+    {
+        $workspace = Workspace::findOrFail($workspaceId);
+
+        // Hanya owner yang bisa hapus
+        if ($workspace->id_user !== auth::id()) {
+            abort(403, 'Kamu bukan pemilik workspace.');
+        }
+
+        // Hindari hapus diri sendiri
+        if ($userId == auth::id()) {
+            return back()->with('error', 'Kamu tidak bisa menghapus dirimu sendiri.');
+        }
+
+        $workspace->members()->detach($userId);
+
+        return back()->with('success', 'Member berhasil dihapus dari workspace.');
     }
 
 
