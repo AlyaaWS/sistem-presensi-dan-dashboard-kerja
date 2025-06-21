@@ -354,32 +354,114 @@
             </div>
 
             <!-- Daftar Workspace -->
-            <div class="workspace-list">
-            @forelse ($workspaces as $workspace)
-            <div onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'"
-                class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
-                style="cursor: pointer; position: relative;">
+        <div class="workspace-list">
+@forelse (Auth::user()->workspaces as $workspace)
+    <div class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
+         style="cursor: pointer; position: relative;"
+         onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'">
         
         <span>{{ $workspace->title }}</span>
 
+        <!-- Dropdown Actions -->
         <div class="dropdown-custom" onclick="event.stopPropagation();">
             <i class="fas fa-ellipsis-v text-muted toggle-dropdown"></i>
             <div class="dropdown-menu-custom">
                 <h6>Workspace Actions</h6>
-                <a href="#" data-toggle="modal" data-target="#addWorkspaceModal">Add workspace</a>
+
+                <!-- Copy -->
                 <form action="{{ route('workspace.copy', $workspace->id_workspace) }}" method="POST">
                     @csrf
                     <button type="submit">Copy workspace</button>
                 </form>
-                <form action="{{ route('workspace.destroy', $workspace->id_workspace) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
+
+                <!-- Delete -->
+                <form action="{{ route('workspace.destroy', $workspace->id_workspace) }}" method="POST"
+                      onsubmit="return confirm('Yakin ingin menghapus workspace ini?');">
                     @csrf
                     @method('DELETE')
                     <button type="submit">Delete workspace</button>
                 </form>
+
+                <!-- Rename -->
                 <a href="#" data-toggle="modal" data-target="#renameModal{{ $workspace->id_workspace }}">Rename workspace</a>
-                <button class="dropdown-item" data-toggle="modal" data-target="#viewMembersModal{{ $workspace->id_workspace }}">
-                    <i class="fas fa-users mr-2"></i>View Members
-                </button>
+
+                <!-- View & Invite -->
+                <a href="#" class="view-invite-btn" data-target="#viewMembersModal{{ $workspace->id_workspace }}">View & Invite</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Rename -->
+    <div class="modal fade" id="renameModal{{ $workspace->id_workspace }}" tabindex="-1" aria-labelledby="renameModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('workspace.rename', $workspace->id_workspace) }}">
+                @csrf
+                @method('PUT')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Rename Workspace</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="title">Nama Baru</label>
+                            <input type="text" name="title" class="form-control" value="{{ $workspace->title }}" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-pink">Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal View + Invite -->
+    <div class="modal fade" id="viewMembersModal{{ $workspace->id_workspace }}" tabindex="-1" aria-labelledby="viewMembersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Anggota Workspace</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{-- Daftar Anggota --}}
+                    <ul class="list-group mb-3">
+                        @forelse ($workspace->members as $member)
+<li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ $member->name }}
+    <div class="d-flex align-items-center">
+        <span class="badge badge-secondary mr-2">{{ $member->pivot->role_in_workspace }}</span>
+
+        @if(Auth::id() === $workspace->id_user && $member->id !== $workspace->id_user)
+        <form action="{{ route('workspace.removeMember', [$workspace->id_workspace, $member->id]) }}" method="POST" onsubmit="return confirm('Hapus member ini?')">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-sm btn-danger" title="Hapus"><i class="fas fa-user-times"></i></button>
+        </form>
+        @endif
+    </div>
+</li>
+@empty
+<p class="text-muted">Belum ada member</p>
+@endforelse
+
+
+                    {{-- Form Invite Member --}}
+                    <form method="POST" action="{{ route('workspace.invite') }}">
+                        @csrf
+                        <input type="hidden" name="id_workspace" value="{{ $workspace->id_workspace }}">
+                        <div class="form-group">
+                            <label for="email">Invite via Email</label>
+                            <input type="email" name="email" class="form-control" required placeholder="Email pengguna yang terdaftar">
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-pink">Undang</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -387,7 +469,6 @@
     <p class="text-white">Belum ada workspace</p>
 @endforelse
 </div>
-
 
             <!-- Pagination -->
             <nav aria-label="Page navigation">
@@ -426,8 +507,6 @@
             });
         });
     });
-
-    
 </script>
 
 <script>
@@ -460,6 +539,20 @@
         });
     });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Buka modal manual untuk elemen .view-invite-btn
+    document.querySelectorAll('.view-invite-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-target');
+            $(target).modal('show');
+        });
+    });
+});
+</script>
+
 
 @if(session('success'))
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
