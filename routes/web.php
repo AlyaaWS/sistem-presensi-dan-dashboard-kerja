@@ -121,6 +121,7 @@ Route::put('/workspace/{id}/archive', [WorkspaceController::class, 'archive'])->
 Route::get('/workspace/archived', [WorkspaceController::class, 'archived'])->name('workspace.archived');
 Route::put('/workspace/{id}/rename', [WorkspaceController::class, 'rename'])->name('workspace.rename');
 Route::put('/workspace/{id}/unarchive', [WorkspaceController::class, 'unarchive'])->name('workspace.unarchive');
+Route::delete('/workspace/{workspace}/member/{user}', [WorkspaceController::class, 'removeMember'])->name('workspace.removeMember');
 
 //board
 Route::get('/workspace/{id}/boards', [BoardController::class, 'index'])->name('workspace.boards');
@@ -134,6 +135,9 @@ Route::patch('/tasks/{id}', [TaskController::class, 'update'])->name('task.updat
 Route::patch('/boards/{id}', [BoardController::class, 'rename'])->name('board.rename');
 Route::patch('/tasks/{id}/toggle', [TaskController::class, 'toggle'])->name('task.toggle');
 Route::post('/workspace/invite', [WorkspaceController::class, 'invite'])->name('workspace.invite');
+Route::post('/workspace/{id}/accept', [WorkspaceController::class, 'accept'])->name('workspace.accept');
+Route::delete('/workspace/{id}/reject', [WorkspaceController::class, 'reject'])->name('workspace.reject');
+
 
 
 
