@@ -10,26 +10,29 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('workspace_user', function (Blueprint $table) {
-        $table->id(); // optional, lebih baik pakai id auto
-        $table->unsignedBigInteger('id_user');
-        $table->unsignedBigInteger('id_workspace');
-        $table->string('role_in_workspace')->default('member'); // default = member
-        $table->timestamps();
+    {
+        Schema::create('workspace_user', function (Blueprint $table) {
+            $table->id(); // Optional, boleh dihapus kalau hanya pivot murni
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_workspace');
+            $table->string('role_in_workspace')->default('member'); // member / admin
+            $table->string('status')->default('pending'); // NEW: pending / accepted
+            $table->timestamps();
 
-        // Foreign key constraint
-        $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-        $table->foreign('id_workspace')->references('id_workspace')->on('workspaces')->onDelete('cascade');
+            // Foreign key constraint
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_workspace')->references('id_workspace')->on('workspaces')->onDelete('cascade');
 
-        // Optional: mencegah duplicate
-        $table->unique(['id_user', 'id_workspace']);
-    });
-}
+            // Cegah duplikasi
+            $table->unique(['id_user', 'id_workspace']);
+        });
+    }
 
-public function down(): void
-{
-    Schema::dropIfExists('workspace_user');
-}
-
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('workspace_user');
+    }
 };
