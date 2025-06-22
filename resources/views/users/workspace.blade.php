@@ -118,6 +118,7 @@
             background-color: #415dd0;
             color: white;
             font-weight: 700;
+            z-index: 3;
         }
 
         .top-controls {
@@ -230,10 +231,31 @@
     text-decoration: underline;
 }
 
-/* Tampilkan dropdown saat ada class 'show' */
-.dropdown-menu-custom.show {
-    display: block;
-}
+        #backToTop {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            display: none;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        #backToTop:hover {
+            background-color: #0056b3;
+        }
+
+        /* Tampilkan dropdown saat ada class 'show' */
+        .dropdown-menu-custom.show {
+            display: block;
+        }
 
         
         @media (max-width: 768px) {
@@ -383,7 +405,8 @@
                 </form>
 
                 <!-- Rename -->
-                <a href="#" data-toggle="modal" data-target="#renameModal{{ $workspace->id_workspace }}">Rename workspace</a>
+                <a href="#" onclick="$('#renameModal{{ $workspace->id_workspace }}').modal('show'); return false;">Rename workspace</a>
+
 
                 <!-- View & Invite -->
                 <a href="#" class="view-invite-btn" data-target="#viewMembersModal{{ $workspace->id_workspace }}">View & Invite</a>
@@ -591,6 +614,26 @@ document.addEventListener('DOMContentLoaded', function () {
         </form>
     </div>
 </div>
+
+<button onclick="scrollToTop()" id="backToTop" title="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+    // Tampilkan tombol ketika scroll turun 100px
+    window.onscroll = function () {
+        const btn = document.getElementById("backToTop");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    // Fungsi scroll ke atas
+    function scrollToTop() {
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+    }
+</script>
+
 
 </body>
 </html>

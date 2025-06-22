@@ -122,6 +122,28 @@
             padding-bottom: 5px;
         }
 
+        #backToTop {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            display: none;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        #backToTop:hover {
+            background-color: #0056b3;
+        }
+
+
 
         @media (max-width: 768px) {
             #sidebar {

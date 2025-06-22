@@ -101,6 +101,27 @@
             font-weight: bold;
             z-index: 1;
         }
+
+         #backToTop {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            display: none;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        #backToTop:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -125,5 +146,25 @@
     <!-- Footer -->
     <div class="footer">@AALYAAS</div>
 
-</body>
+    <button onclick="scrollToTop()" id="backToTop" title="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+
+
+</body><script>
+    // Tampilkan tombol ketika scroll turun 100px
+    window.onscroll = function () {
+        const btn = document.getElementById("backToTop");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            btn.style.display = "block";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    // Fungsi scroll ke atas
+    function scrollToTop() {
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+    }
+</script>
+
 </html>
