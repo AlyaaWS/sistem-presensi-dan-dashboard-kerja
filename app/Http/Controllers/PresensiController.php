@@ -10,6 +10,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+
 
 class PresensiController extends Controller
 {
@@ -127,4 +131,30 @@ class PresensiController extends Controller
 
         return redirect('/presensi')->with('success', 'Presensi berhasil!');
     }
+
+
+public function importPresensiWithML(Request $request)
+{
+    $request->validate([
+        'file' => 'required|file|mimes:csv,txt',
+    ]);
+
+    $file = $request->file('file');
+    $filePath = $file->getPathname();
+    $fileName = $file->getClientOriginalName();
+
+    $response = Http::attach(
+        'file', file_get_contents($filePath), $fileName
+    )->post('https://brribrian-ml-anomali.hf.space/predict'); // Ganti dengan URL HuggingFace kamu
+
+    $hasil = $response->json();
+
+    if (!$hasil || !is_array($hasil)) {
+        return redirect()->route('dashboard')->with('error', 'Gagal menganalisis file.');
+    }
+
+    return redirect()->route('dashboard')->with('hasil', $hasil); // ⬅️ kirim via session
+}
+
+
 }

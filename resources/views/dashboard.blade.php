@@ -255,6 +255,63 @@
     </table>
 </div>
 
+<div class="container mt-4">
+    <div class="card shadow-sm p-4 bg-white text-dark">
+        <h4 class="mb-4 font-weight-bold">Upload Presensi untuk Deteksi Anomali</h4>
+
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        <form action="{{ route('presensi.cek') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="file" class="font-weight-medium">File CSV Presensi</label>
+                <input type="file" class="form-control-file" name="file" id="file" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Cek Anomali</button>
+        </form>
+    </div>
+
+    @if(isset($hasil) && is_array($hasil))
+        <div class="card shadow-sm mt-5 p-4 bg-white text-dark">
+            <h4 class="mb-4 font-weight-bold">Preview Hasil Deteksi Anomali</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>User ID</th>
+                            <th>Tanggal</th>
+                            <th>Jam Masuk</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($hasil as $row)
+                            <tr>
+                                <td>{{ $row['user_id'] }}</td>
+                                <td>{{ $row['tanggal'] }}</td>
+                                <td>{{ $row['jam_masuk'] }}</td>
+                                <td class="{{ $row['status'] == 'Mencurigakan' ? 'text-danger font-weight-bold' : 'text-success' }}">
+                                    {{ $row['status'] }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-right">
+                <a href="{{ url('/cek-anomali') }}" class="btn btn-outline-secondary mt-3">Upload Lagi</a>
+            </div>
+        </div>
+    @endif
+</div>
+<br>
+<br>
+<br>
+    </div>
+
 
 <div class="footer">@AALYAAS</div>
 

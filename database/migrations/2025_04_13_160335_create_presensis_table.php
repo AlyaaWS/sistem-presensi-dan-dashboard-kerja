@@ -17,7 +17,8 @@ return new class extends Migration
             $table->time('time');
             $table->string('location');
             $table->unsignedBigInteger('id_user');
-            $table->unsignedBigInteger('id_schedule'); // ditambahkan
+            $table->unsignedBigInteger('id_schedule');
+            $table->string('status')->nullable(); // ditambahkan
          });
      }
 

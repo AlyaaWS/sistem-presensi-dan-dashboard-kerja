@@ -225,21 +225,6 @@
         </nav>
 
         <!-- Main content goes here -->
-        <h5 class="text-white mt-4">Undangan Workspace</h5>
-    @foreach(Auth::user()->workspaces()->wherePivot('status', 'pending')->get() as $workspace)
-        <div class="workspace-item p-3 bg-light rounded mb-2">
-            <strong>{{ $workspace->title }}</strong>
-            <form method="POST" action="{{ route('workspace.accept', $workspace->id_workspace) }}" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-success btn-sm">Terima</button>
-            </form>
-            <form method="POST" action="{{ route('workspace.reject', $workspace->id_workspace) }}" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-            </form>
-        </div>
-    @endforeach
 
     </div>
 </div>

@@ -138,14 +138,16 @@ Route::post('/workspace/invite', [WorkspaceController::class, 'invite'])->name('
 Route::post('/workspace/{id}/accept', [WorkspaceController::class, 'accept'])->name('workspace.accept');
 Route::delete('/workspace/{id}/reject', [WorkspaceController::class, 'reject'])->name('workspace.reject');
 
-
-
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard-admin', [DashboardAdminController::class, 'index'])->name('dashboard.admin');
     Route::put('/dashboard-admin/{id}/aktifkan', [DashboardAdminController::class, 'aktifkan'])->name('dashboard.admin.aktifkan');
 });
 
 
+Route::get('/cek-anomali', function () {
+    return view('presensi.upload');
+});
+
+Route::post('/cek-anomali', [PresensiController::class, 'importPresensiWithML'])->name('presensi.cek');
 
 require __DIR__.'/auth.php';
