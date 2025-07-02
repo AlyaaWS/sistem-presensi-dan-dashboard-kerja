@@ -263,6 +263,34 @@
         </div>
     </div>
 
+    @if($pendingInvites->count())
+    <div class="alert alert-info mt-4">
+        <h5>Undangan Workspace</h5>
+        <ul class="list-group">
+            @foreach($pendingInvites as $invite)
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ $invite->title }}</strong><br>
+                        <small>Diundang oleh: {{ $invite->user->name ?? 'Tidak diketahui' }}</small>
+                    </div>
+                    <div>
+                        <form action="{{ route('workspace.accept', $invite->id_workspace) }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-success">Terima</button>
+                        </form>
+                        <form action="{{ route('workspace.reject', $invite->id_workspace) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin tolak undangan ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Tolak</button>
+                        </form>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
     <!-- Presensi Hari Ini -->
     <div class="card mt-4">
         <div class="card-header bg-dark text-white">
@@ -279,6 +307,7 @@
         </div>
     </div>
 </div>
+
 
 
     </div>

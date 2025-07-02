@@ -10,10 +10,23 @@ use Illuminate\Support\Facades\Auth;
 class WorkspaceController extends Controller
 {
     // Tampilkan semua workspace
-    public function index()
+    public function index(Request $request)
 {
-    $workspaces = Workspace::where('id_user', Auth::id())->get();
-    return view('users.workspace', compact('workspaces'));
+    $perPage = $request->get('per_page', 10);
+    $search = $request->get('search');
+
+    // Ambil semua workspace yang user-nya tergabung di dalamnya (relasi pivot)
+    $query = Auth::user()->workspaces()->with('user'); // relasi ke pemilik
+
+    if ($search) {
+        $query->where('title', 'like', '%' . $search . '%');
+    }
+
+    $workspaces = $query->wherePivot('status', 'accepted') // hanya yang sudah join
+        ->paginate($perPage)
+        ->appends(['per_page' => $perPage, 'search' => $search]);
+
+    return view('users.workspace', compact('workspaces', 'perPage'));
 }
 
 

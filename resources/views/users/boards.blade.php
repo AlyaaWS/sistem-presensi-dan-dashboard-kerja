@@ -447,7 +447,6 @@ body {
                      @method('DELETE')
                      <button type="submit" onclick="return confirm('Hapus board ini?')">Delete board</button>
                     </form>
-                   <button type="button">Archive board</button>
                    <button type="button" data-toggle="modal" data-target="#renameBoardModal"
                      onclick="$('#renameBoardForm').attr('action', '/boards/{{ $board->id_board }}'); $('#board-title').val('{{ $board->title }}')">
                      Rename board
@@ -503,16 +502,11 @@ body {
     </div>
 </div>
 
-
             <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+                <div class="mt-4 d-flex justify-content-center">
+                     {{ $boards->links('pagination::bootstrap-4') }}
+                </div>
+            </nav><br><br>
         </div>
     </div>
 </div>

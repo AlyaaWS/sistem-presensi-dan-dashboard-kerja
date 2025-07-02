@@ -359,10 +359,10 @@
                 <div class="d-flex align-items-center">
                     <label for="entriesSelect" class="mr-2 mb-0 text-white">Show</label>
                     <select id="entriesSelect" class="form-control form-control-sm mr-2">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                        <option>100</option>
+                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                     </select>
                     <p class="text text-white">entries</p>
                     <div class="search-container ml-3">
@@ -377,12 +377,12 @@
 
             <!-- Daftar Workspace -->
         <div class="workspace-list">
-@forelse (Auth::user()->workspaces as $workspace)
-    <div class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
-         style="cursor: pointer; position: relative;"
-         onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'">
-        
-        <span>{{ $workspace->title }}</span>
+            @forelse ($workspaces as $workspace)
+            <div class="workspace-item d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded"
+     data-title="{{ strtolower($workspace->title) }}"
+     style="cursor: pointer; position: relative;"
+     onclick="window.location='{{ route('workspace.boards', $workspace->id_workspace) }}'">
+    <span>{{ $workspace->title }}</span>
 
         <!-- Dropdown Actions -->
         <div class="dropdown-custom" onclick="event.stopPropagation();">
@@ -493,21 +493,15 @@
 @endforelse
 </div>
 
+
             <!-- Pagination -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center mt-4">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-                <br>
-                <br>
-            </nav>
+            <!-- Pagination -->
+<div class="d-flex justify-content-center mt-4">
+    {{ $workspaces->links() }}
+</div><br><br>
         </div>
     </div>
-</div>
+
 
 <!-- Footer -->
 <div class="footer">@AALYAAS</div>
@@ -633,6 +627,112 @@ document.addEventListener('DOMContentLoaded', function () {
         $('html, body').animate({ scrollTop: 0 }, 'slow');
     }
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const items = Array.from(document.querySelectorAll('.workspace-item'));
+    const entriesSelect = document.getElementById('entriesSelect');
+    const searchInput = document.getElementById('searchInput');
+    const pagination = document.getElementById('pagination');
+
+    let currentPage = 1;
+    let itemsPerPage = parseInt(entriesSelect.value);
+
+    function filterItems() {
+        const keyword = searchInput.value.toLowerCase();
+        return items.filter(item =>
+            item.getAttribute('data-title').includes(keyword)
+        );
+    }
+
+    function render(filteredItems) {
+        items.forEach(item => item.style.display = 'none');
+
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        filteredItems.slice(start, end).forEach(item => {
+            item.style.display = '';
+        });
+
+        renderPagination(filteredItems.length);
+    }
+
+    function renderPagination(totalItems) {
+        const pageCount = Math.ceil(totalItems / itemsPerPage);
+        pagination.innerHTML = '';
+
+        for (let i = 1; i <= pageCount; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = 'btn btn-sm mx-1 ' + (i === currentPage ? 'btn-primary' : 'btn-light');
+            btn.addEventListener('click', () => {
+                currentPage = i;
+                render(filterItems());
+            });
+            pagination.appendChild(btn);
+        }
+    }
+
+    entriesSelect.addEventListener('change', function () {
+        itemsPerPage = parseInt(this.value);
+        currentPage = 1;
+        render(filterItems());
+    });
+
+    searchInput.addEventListener('input', function () {
+        currentPage = 1;
+        render(filterItems());
+    });
+
+    render(filterItems());
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const entriesSelect = document.getElementById('entriesSelect');
+
+    entriesSelect.addEventListener('change', function () {
+        const selected = this.value;
+        const params = new URLSearchParams(window.location.search);
+        params.set('per_page', selected);
+        window.location.href = window.location.pathname + '?' + params.toString();
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+    let debounceTimer;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const search = searchInput.value;
+            const params = new URLSearchParams(window.location.search);
+            params.set('search', search);
+            params.set('page', 1); // reset ke halaman 1 saat search baru
+            window.location.href = window.location.pathname + '?' + params.toString();
+        }, 500); // delay 500ms setelah user berhenti ngetik
+    });
+});
+</script>
+
+@if(session('success'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#e0559f'
+    });
+</script>
+@endif
+
+
 
 
 </body>

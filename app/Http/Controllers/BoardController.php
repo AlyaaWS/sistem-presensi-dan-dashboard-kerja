@@ -16,7 +16,10 @@ class BoardController extends Controller
         if (!$workspace->members->contains(Auth::id())) {
              abort(403, 'Kamu bukan anggota workspace ini.');
         }
-        $boards = Board::with('tasks')->where('id_workspace', $id)->get();
+        $boards = Board::with('tasks')
+         ->where('id_workspace', $id)
+         ->paginate(8);
+
 
         return view('users.boards', compact('workspace', 'boards'));
     }
