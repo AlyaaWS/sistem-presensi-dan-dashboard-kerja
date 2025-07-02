@@ -464,14 +464,20 @@
         </button>
       </div>
       <div class="modal-body">
-        <ul class="list-group">
-          @foreach(\App\Models\Role::all() as $role)
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              {{ $role->nama_role }}
-              <span class="badge badge-primary badge-pill">{{ $role->users()->count() }} pengguna</span>
-            </li>
-          @endforeach
-        </ul>
+       <ul class="list-group">
+    @foreach(\App\Models\Role::all() as $role)
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>{{ $role->nama_role }}</div>
+            <form action="{{ route('role.destroy', $role->id_role) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus role ini?')" style="margin: 0;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </form>
+        </li>
+    @endforeach
+</ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

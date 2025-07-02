@@ -154,5 +154,18 @@ public function importPresensiWithML(Request $request)
     return redirect()->route('dashboard')->with('hasil', $hasil); // ⬅️ kirim via session
 }
 
+public function hapusPengaturan()
+{
+    $schedule = Schedule::first(); // atau filter sesuai user/role
+
+    if ($schedule) {
+        $schedule->delete();
+        return back()->with('success', 'Pengaturan presensi berhasil dihapus.');
+    }
+
+    return back()->with('failed', 'Tidak ada pengaturan yang ditemukan.');
+}
+
+
 
 }

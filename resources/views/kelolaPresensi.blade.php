@@ -229,6 +229,12 @@
         background-color: #ff2cab;
         }
 
+        .btn-danger {
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        }
+
         .form-control {
         border-radius: 10px;
         border: none;
@@ -511,10 +517,25 @@
           </div>
 
         </div>
-        <div class="modal-footer border-0">
-          <button type="submit" class="btn btn-pink btn-block">OK</button>
-        </div>
+
+        <div class="modal-footer border-0 flex-column w-100">
+    <form action="{{ route('atur.presensi') }}" method="POST" class="w-100 mb-2">
+        @csrf
+        <button type="submit" class="btn btn-pink btn-block">OK</button>
+    </form>
+
+    <form action="{{ route('hapus.atur.presensi') }}" method="POST" class="w-100">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Yakin ingin menghapus pengaturan presensi?')">
+            Hapus Pengaturan
+        </button>
+    </form>
+</div>
+        
       </form>
+
+      
 
     </div>
   </div>

@@ -128,6 +128,8 @@ Route::get('/presensi/token/{token}', [PresensiController::class, 'scanQr'])->na
 Route::get('/presensi/scan', function () {
     return view('users.scan');
 })->name('presensi.scan.page');
+Route::delete('/presensi/atur/hapus', [PresensiController::class, 'hapusPengaturan'])->name('hapus.atur.presensi');
+
 
 //workspace
 Route::post('/workspace', [WorkspaceController::class, 'store'])->name('workspace.store');
@@ -167,5 +169,6 @@ Route::get('/cek-anomali', function () {
 Route::post('/cek-anomali', [PresensiController::class, 'importPresensiWithML'])->name('presensi.cek');
 Route::get('/roles/list', [RoleController::class, 'index'])->name('role.list');
 
+Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
 
 require __DIR__.'/auth.php';

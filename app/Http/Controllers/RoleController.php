@@ -34,4 +34,18 @@ class RoleController extends Controller
         // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Role berhasil ditambahkan.');
     }
+
+    public function destroy($id)
+    {
+        $role = Role::findOrFail($id);
+
+        // Pastikan tidak ada user yang pakai role ini sebelum dihapus
+        if ($role->users()->count() > 0) {
+            return redirect()->back()->with('failed', 'Tidak bisa menghapus role yang masih digunakan.');
+        }
+
+        $role->delete();
+        return redirect()->back()->with('success', 'Role berhasil dihapus.');
+    }
+
 }
