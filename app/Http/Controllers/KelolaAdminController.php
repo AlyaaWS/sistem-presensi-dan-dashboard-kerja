@@ -10,8 +10,7 @@ class KelolaAdminController extends Controller
     public function index()
     {
         $admins = User::with('role')->whereHas('role', function ($query) {
-            $query->where('nama_role', 'admin 1')
-                  ->orWhere('nama_role', 'admin 2');
+           $query->whereRaw('LOWER(nama_role) LIKE ?', ['%admin%']);
         })->get();
 
         return view('kelolaAdmin', compact('admins'));

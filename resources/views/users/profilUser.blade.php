@@ -243,7 +243,7 @@
         }
 
 
-        @media (max-width: 768px) {
+         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -230px;
             }
@@ -256,19 +256,51 @@
                 display: none;
             }
 
-            .top-controls {
-                flex-direction: column;
-                align-items: stretch;
+            #sidebarCollapse {
+            transition: all 0.3s ease;
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            z-index: 1050;
             }
 
-            .top-controls > div {
-                margin-bottom: 10px;
+             .wrapper.toggled #sidebar {
+                margin-left: 0px;
             }
 
-            .btn-pink {
-                margin-left: 175px;
+            .wrapper.toggled #sidebarCollapse {
+            left: 35px;
             }
-        }
+
+            #sidebarCollapse span {
+                display: none;
+            }
+
+            /* Konten menyesuaikan */
+            #content {
+                padding: 10px;
+            }
+
+            /* Navbar lebih fleksibel */
+            .navbar .container-fluid {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .navbar .d-flex {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            #backToTop {
+                bottom: 60px;
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 16px;
+            }
+
+            }
     </style>
 </head>
 <body>
@@ -317,9 +349,6 @@
                     <i class="fas fa-align-left"></i>
                 </button>
                 <div class="d-flex align-items-center">
-                    <a href="#" class="text-white mr-3" title="Notifications">
-                        <i class="fas fa-bell fa-lg"></i>
-                    </a>
                     <a href="{{ route('profile.edit') }}">
                         <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>

@@ -151,18 +151,63 @@
             #sidebarCollapse span {
                 display: none;
             }
-        }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #415dd0;
-            color: white;
-            font-weight: 700;
-        }
+            #sidebarCollapse {
+            transition: all 0.3s ease;
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            z-index: 1050;
+            }
+
+             .wrapper.toggled #sidebar {
+                margin-left: 0px;
+            }
+
+            .wrapper.toggled #sidebarCollapse {
+            left: 35px;
+            }
+
+            #sidebarCollapse span {
+                display: none;
+            }
+
+            /* Konten menyesuaikan */
+            #content {
+                padding: 10px;
+            }
+
+            /* Navbar lebih fleksibel */
+            .navbar .container-fluid {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .navbar .d-flex {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            #backToTop {
+                bottom: 60px;
+                right: 15px;
+                padding: 8px 12px;
+                font-size: 16px;
+            }
+
+            }
+
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px;
+                background-color: #415dd0;
+                color: white;
+                font-weight: 700;
+            }
     </style>
 </head>
 <body>
@@ -212,9 +257,6 @@
                     <i class="fas fa-align-left"></i>
                 </button>
                 <div class="d-flex align-items-center">
-                    <a href="#" class="text-white mr-3" title="Notifications">
-                        <i class="fas fa-bell fa-lg"></i>
-                    </a>
                     <a href="{{ route('profil') }}">
                         <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>

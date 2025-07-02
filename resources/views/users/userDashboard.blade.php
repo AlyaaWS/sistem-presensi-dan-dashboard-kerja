@@ -142,29 +142,84 @@
 
 
         @media (max-width: 768px) {
-            #sidebar {
-                margin-left: -230px;
-            }
+    /* Sidebar responsif */
+    #sidebar {
+        position: fixed;
+        height: 100%;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        margin-left: -250px;
+        transition: all 0.3s;
+    }
 
-            #sidebar.active {
-                margin-left: 0;
-            }
+    #sidebar.active {
+        margin-left: 0;
+    }
 
-            #sidebarCollapse span {
-                display: none;
-            }
-        }
+    .wrapper.toggled #sidebar {
+        margin-left: 0px;
+    }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background-color: #415dd0;
-            color: white;
-            font-weight: 700;
-        }
+    #sidebarCollapse {
+    transition: all 0.3s ease;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    z-index: 1050;
+    }
+
+    .wrapper.toggled #sidebarCollapse {
+    left: 270px;
+    }
+
+
+    /* Tombol toggle */
+    #sidebarCollapse span {
+        display: none;
+    }
+
+    /* Konten menyesuaikan */
+    #content {
+        padding: 10px;
+    }
+
+    /* Navbar lebih fleksibel */
+    .navbar .container-fluid {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .navbar .d-flex {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    /* Kartu dan teks jadi lebih kecil */
+    .card .card-title {
+        font-size: 1rem;
+    }
+
+    .card .card-text.display-4 {
+        font-size: 1.5rem;
+    }
+
+    /* Footer di mobile */
+    .footer {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    /* Tombol scroll to top */
+    #backToTop {
+        bottom: 60px;
+        right: 15px;
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -214,9 +269,6 @@
                     <i class="fas fa-align-left"></i>
                 </button>
                 <div class="d-flex align-items-center">
-                    <a href="#" class="text-white mr-3" title="Notifications">
-                        <i class="fas fa-bell fa-lg"></i>
-                    </a>
                     <a href="{{ route('profil') }}">
                         <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
                     </a>
@@ -300,13 +352,14 @@
             @if ($todaySchedule)
                 <p><strong>Jam:</strong> {{ $todaySchedule->start_time }} - {{ $todaySchedule->end_time }}</p>
                 <p><strong>Hari Aktif:</strong> {{ ucfirst($todaySchedule->active_day) }}</p>
-                <p><strong>Lokasi:</strong> {{ $todaySchedule->location }}</p>
             @else
                 <p class="text-muted">Tidak ada jadwal aktif saat ini.</p>
             @endif
         </div>
     </div>
 </div>
+<br>
+<br>
 
 
 
@@ -324,9 +377,17 @@
         $('#sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
             $('.wrapper').toggleClass('toggled');
+            $('#overlay').toggleClass('active');
+        });
+
+        $('#overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.wrapper').removeClass('toggled');
+            $(this).removeClass('active');
         });
     });
 </script>
+
 
 <button onclick="scrollToTop()" id="backToTop" title="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
 
