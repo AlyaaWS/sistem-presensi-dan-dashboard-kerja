@@ -39,10 +39,8 @@ class PresensiController extends Controller
         }
         */
 
-        // Ambil semua jadwal aktif di jam ini
         $schedules = Schedule::whereRaw('? BETWEEN start_time AND end_time', [$timeNow])->get();
 
-        // Cek satu per satu apakah hari ini masuk range-nya
         $schedule = $schedules->first(function ($item) use ($today) {
             return $this->isTodayInRange($item->active_day, $today);
         });

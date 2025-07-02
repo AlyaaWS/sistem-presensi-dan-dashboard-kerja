@@ -334,18 +334,18 @@
                 <div class="row">
                     <div class="col-md-4 text-center">
                        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="img-fluid rounded" style="max-width: 200px; height: 200px;">
-                        <h5 class="text-dark">{{ Auth::user()->name }}</h5>
-                        <p class="text-muted">{{ Auth::user()->email }}</p>
+                        <h5 class="text-dark">{{$user->name}}</h5>
+                        <p class="text-muted">{{$user->email}}</p>
                     </div>
                     <div class="col-md-8">
                         <table class="table table-borderless">
                             <tr>
                                 <th class="text-dark">Nama Lengkap</th>
-                                <td>{{ Auth::user()->name }}</td>
+                                <td>{{$user->name}}</td>
                             </tr>
                             <tr>
                                 <th class="text-dark">Email</th>
-                                <td>{{ Auth::user()->email }}</td>
+                                <td>{{$user->email}}</td>
                             </tr>
                             <tr>
                                 <th class="text-dark">Tanggal Bergabung</th>

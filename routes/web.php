@@ -25,24 +25,27 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\DashboardUserController;
 
-//route export excel
 Route::get('/admin/unduh', function () {
-    return Excel::download(new AdminsExport, 'data_admin.xlsx');
+    return Excel::download(new AdminsExport, 'data_admin.csv');
 })->name('unduh.admin');
+
 Route::get('/user/unduh', function () {
-    return Excel::download(new UsersExport, "data_user.xlsx");
+    return Excel::download(new UsersExport, 'data_user.csv');
 })->name('unduh.user');
+
 Route::get('/export-presensi', function () {
-    return Excel::download(new PresensiExport, 'data_presensi.xlsx');
+    return Excel::download(new PresensiExport, 'data_presensi.csv');
 })->name('unduh.presensi');
+
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth'])->group(function () {
+/*Route::middleware(['auth'])->group(function () {
     // Admin dashboard
     Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
 
@@ -50,6 +53,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/dashboardUser', function () {
         return view('users.dashboardUser');
     })->name('dashboard.user');
+});*/
+
+Route::middleware(['auth'])->group(function () {
+    // Admin
+    Route::get('/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard');
+
+    // User
+    Route::get('/dashboard-user', [DashboardUserController::class, 'index'])->name('dashboard.user');
 });
 
 Route::put('/dashboard-admin/{id}/aktifkan', [DashboardAdminController::class, 'aktifkan'])->name('dashboard.admin.aktifkan');
@@ -93,12 +104,17 @@ Route::put('/presensi/{id}', [EditPresensiController::class, 'update'])->name('u
 Route::get('/presensi/{id}/edit', [EditPresensiController::class, 'edit'])->name('edit.presensi');
 
 //profil
-Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+    Route::get('/profil/edit', [ProfilController::class, 'edit'])->name('profil.edit');
+    Route::patch('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::delete('/profil', [ProfilController::class, 'destroy'])->name('profil.destroy');
+});
 
 //Sidebar User
-Route::get('/dahsboard-user', function () {
+/*Route::get('/dashboard-user', function () {
     return view('users.dashboardUser');
-})->name('dashboard.user');
+})->name('dashboard.user');*/
 Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi');
 Route::get('/workspace', [WorkspaceController::class, 'index'])->name('workspace');
 Route::get('/profil-user', [ProfilUserController::class, 'index'])->name('profil.user');
@@ -149,5 +165,7 @@ Route::get('/cek-anomali', function () {
 });
 
 Route::post('/cek-anomali', [PresensiController::class, 'importPresensiWithML'])->name('presensi.cek');
+Route::get('/roles/list', [RoleController::class, 'index'])->name('role.list');
+
 
 require __DIR__.'/auth.php';

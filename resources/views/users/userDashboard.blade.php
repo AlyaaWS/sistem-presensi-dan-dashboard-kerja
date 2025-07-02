@@ -225,6 +225,61 @@
         </nav>
 
         <!-- Main content goes here -->
+        <div class="container mt-4">
+    <h2 class="text-white mb-4">Selamat datang, {{ Auth::user()->name }} 👋</h2>
+
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Workspace</h5>
+                    <p class="card-text display-4">{{ $workspaceCount }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Board</h5>
+                    <p class="card-text display-4">{{ $boardCount }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Selesai</h5>
+                    <p class="card-text display-4">{{ $completedTasks }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Belum Selesai</h5>
+                    <p class="card-text display-4">{{ $pendingTasks }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Presensi Hari Ini -->
+    <div class="card mt-4">
+        <div class="card-header bg-dark text-white">
+            Jadwal Presensi Hari Ini
+        </div>
+        <div class="card-body">
+            @if ($todaySchedule)
+                <p><strong>Jam:</strong> {{ $todaySchedule->start_time }} - {{ $todaySchedule->end_time }}</p>
+                <p><strong>Hari Aktif:</strong> {{ ucfirst($todaySchedule->active_day) }}</p>
+                <p><strong>Lokasi:</strong> {{ $todaySchedule->location }}</p>
+            @else
+                <p class="text-muted">Tidak ada jadwal aktif saat ini.</p>
+            @endif
+        </div>
+    </div>
+</div>
+
 
     </div>
 </div>

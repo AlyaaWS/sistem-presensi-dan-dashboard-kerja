@@ -5,7 +5,6 @@
     <title>Board - {{ $workspace->title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap & FontAwesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
@@ -768,10 +767,10 @@ $(document).on('change', '.task-check', function () {
 
      $.ajax({
          url: `/tasks/${id}/toggle`,
-         method: 'POST', // ← WAJIB pakai POST
+         method: 'POST',
          data: {
             _token: '{{ csrf_token() }}',
-            _method: 'PATCH' // ← PATCH override
+            _method: 'PATCH'
          },
          success: function (res) {
             if (res.status === 'selesai') {
@@ -791,7 +790,6 @@ $(document).on('change', '.task-check', function () {
 <button onclick="scrollToTop()" id="backToTop" title="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
 
 <script>
-    // Tampilkan tombol ketika scroll turun 100px
     window.onscroll = function () {
         const btn = document.getElementById("backToTop");
         if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
@@ -801,7 +799,6 @@ $(document).on('change', '.task-check', function () {
         }
     };
 
-    // Fungsi scroll ke atas
     function scrollToTop() {
         $('html, body').animate({ scrollTop: 0 }, 'slow');
     }

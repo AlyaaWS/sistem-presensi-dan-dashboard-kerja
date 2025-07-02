@@ -5,7 +5,6 @@
     <title>Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap & FontAwesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
@@ -84,7 +83,7 @@
 
         #sidebarCollapse {
             margin-left: -15px;
-            order: -1
+            order: -1;
         }
 
         #content {
@@ -117,6 +116,18 @@
             color: #fff;
         }
 
+        .btn-pink {
+            background-color: #ff69b4;
+            color: white;
+            border-radius: 6px;
+            font-weight: 540;
+        }
+
+        .btn-pink:hover {
+            background-color: #e0559f;
+            color: white;
+        }
+
         #backToTop {
             position: fixed;
             bottom: 70px;
@@ -137,7 +148,6 @@
         #backToTop:hover {
             background-color: #0056b3;
         }
-
 
         @media (max-width: 768px) {
             #sidebar {
@@ -168,6 +178,7 @@
 <body>
 
 <div class="wrapper">
+
     <!-- Sidebar -->
     <nav id="sidebar">
         <div class="sidebar-header">
@@ -186,11 +197,15 @@
             <li class="{{ Route::is('kelola.presensi') ? 'active' : '' }}">
                 <a href="{{ route('kelola.presensi') }}"><i class="fas fa-calendar-alt mr-2"></i>Kelola Presensi</a>
             </li>
-            <li><a href="{{ route('profil') }}"><i class="fas fa-user-cog"></i>Profil</a></li>
+            <li>
+                <a href="{{ route('profil') }}"><i class="fas fa-user-cog"></i>Profil</a>
+            </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="logout-link">
+                    <a href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); this.closest('form').submit();"
+                       class="logout-link">
                         <i class="fas fa-sign-out-alt"></i>Logout
                     </a>
                 </form>
@@ -198,8 +213,10 @@
         </ul>
     </nav>
 
-    <!-- Content -->
+    <!-- Main Content -->
     <div id="content">
+
+        <!-- Top Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #151D4B;">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <button type="button" id="sidebarCollapse" class="btn btn-info">
@@ -210,115 +227,117 @@
                         <i class="fas fa-bell fa-lg"></i>
                     </a>
                     <a href="{{ route('profil') }}">
-                        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Profile Picture" class="rounded-circle" style="width: 40px; height: 40px;">
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}"
+                             alt="Profile Picture"
+                             class="rounded-circle"
+                             style="width: 40px; height: 40px;">
                     </a>
                 </div>
             </div>
         </nav>
 
-        <!-- Main content goes here -->
-
+        <!-- Pending Users -->
         <div class="container mt-4">
-    <h2 class="text-white">Pengguna Menunggu Persetujuan</h2>
+            <h2 class="text-white">Pengguna Menunggu Persetujuan</h2><br>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-    <table class="table table-bordered bg-white text-dark">
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($pendingUsers as $user)
-                <tr>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>
-                        <form action="{{ route('dashboard.admin.aktifkan', $user->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <button class="btn btn-success btn-sm" type="submit">Aktifkan</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="3">Tidak ada pengguna baru.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
-
-<div class="container mt-4">
-    <div class="card shadow-sm p-4 bg-white text-dark">
-        <h4 class="mb-4 font-weight-bold">Upload Presensi untuk Deteksi Anomali</h4>
-
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-
-        <form action="{{ route('presensi.cek') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="file" class="font-weight-medium">File CSV Presensi</label>
-                <input type="file" class="form-control-file" name="file" id="file" required>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">Cek Anomali</button>
-        </form>
-    </div>
-
-    @if(isset($hasil) && is_array($hasil))
-        <div class="card shadow-sm mt-5 p-4 bg-white text-dark">
-            <h4 class="mb-4 font-weight-bold">Preview Hasil Deteksi Anomali</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-dark">
+            <table class="table table-bordered bg-white text-dark">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($pendingUsers as $user)
                         <tr>
-                            <th>User ID</th>
-                            <th>Tanggal</th>
-                            <th>Jam Masuk</th>
-                            <th>Status</th>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                <form action="{{ route('dashboard.admin.aktifkan', $user->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-success btn-sm" type="submit">Aktifkan</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($hasil as $row)
-                            <tr>
-                                <td>{{ $row['user_id'] }}</td>
-                                <td>{{ $row['tanggal'] }}</td>
-                                <td>{{ $row['jam_masuk'] }}</td>
-                                <td class="{{ $row['status'] == 'Mencurigakan' ? 'text-danger font-weight-bold' : 'text-success' }}">
-                                    {{ $row['status'] }}
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="text-right">
-                <a href="{{ url('/cek-anomali') }}" class="btn btn-outline-secondary mt-3">Upload Lagi</a>
-            </div>
+                    @empty
+                        <tr>
+                            <td colspan="3">Tidak ada pengguna baru.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-    @endif
-</div>
-<br>
-<br>
-<br>
+
+        <!-- Upload Presensi -->
+        <div class="container mt-4">
+            <div class="card shadow-sm p-4 bg-white text-dark">
+                <h4 class="mb-4 font-weight-bold">Upload Presensi untuk Deteksi Anomali</h4>
+
+                @if(session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+
+                <form action="{{ route('presensi.cek') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="file" class="font-weight-medium">File CSV Presensi</label>
+                        <input type="file" class="form-control-file" name="file" id="file" required>
+                    </div>
+                    <button type="submit" class="btn btn-pink mr-2">Cek Anomali</button>
+                </form>
+            </div>
+
+            @if(isset($hasil) && is_array($hasil))
+                <div class="card shadow-sm mt-5 p-4 bg-white text-dark">
+                    <h4 class="mb-4 font-weight-bold">Preview Hasil Deteksi Anomali</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Tanggal</th>
+                                    <th>Jam Masuk</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($hasil as $row)
+                                    <tr>
+                                        <td>{{ $row['user_id'] }}</td>
+                                        <td>{{ $row['tanggal'] }}</td>
+                                        <td>{{ $row['jam_masuk'] }}</td>
+                                        <td class="{{ $row['status'] == 'Mencurigakan' ? 'text-danger font-weight-bold' : 'text-success' }}">
+                                            {{ $row['status'] }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="text-right">
+                        <a href="{{ url('/cek-anomali') }}" class="btn btn-outline-secondary mt-3">Upload Lagi</a>
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
+</div>
 
-
+<!-- Footer -->
 <div class="footer">@AALYAAS</div>
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
     $(document).ready(function () {
         $('#sidebarCollapse').on('click', function () {
@@ -326,27 +345,22 @@
             $('.wrapper').toggleClass('toggled');
         });
     });
-</script>
 
-<button onclick="scrollToTop()" id="backToTop" title="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
-
-<script>
-    // Tampilkan tombol ketika scroll turun 100px
     window.onscroll = function () {
         const btn = document.getElementById("backToTop");
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            btn.style.display = "block";
-        } else {
-            btn.style.display = "none";
-        }
+        btn.style.display = (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)
+            ? "block" : "none";
     };
 
-    // Fungsi scroll ke atas
     function scrollToTop() {
         $('html, body').animate({ scrollTop: 0 }, 'slow');
     }
 </script>
 
+<!-- Scroll To Top Button -->
+<button onclick="scrollToTop()" id="backToTop" title="Kembali ke atas">
+    <i class="fas fa-arrow-up"></i>
+</button>
 
 </body>
 </html>

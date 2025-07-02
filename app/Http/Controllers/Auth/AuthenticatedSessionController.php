@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        return redirect()->intended('/users/dashboardUser');
+        return redirect()->route('dashboard.user');
     }
 
 

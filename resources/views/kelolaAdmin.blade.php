@@ -443,13 +443,42 @@
           </div>
           <div class="modal-footer">
             <button type="cancel" class="btn btn-secondary">Cancel</button>
-            <button type="cancel" class="btn btn-primary">Lihat Role</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lihatRoleModal">
+                Lihat Role
+            </button>
             <button type="submit" class="btn btn-pink">Simpan</button>
           </div>
         </div>
       </form>
     </div>
   </div>
+
+  <!-- Modal Lihat Role -->
+<div class="modal fade" id="lihatRoleModal" tabindex="-1" role="dialog" aria-labelledby="lihatRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Daftar Role</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          @foreach(\App\Models\Role::all() as $role)
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ $role->nama_role }}
+              <span class="badge badge-primary badge-pill">{{ $role->users()->count() }} pengguna</span>
+            </li>
+          @endforeach
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
